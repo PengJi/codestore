@@ -1,0 +1,17 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: pd-failure
+  namespace: blade
+spec:
+  action: pod-failure
+  mode: one
+  duration: "15m"  # 持续10分钟
+  selector:
+    namespaces:
+      - blade
+    labelSelectors:
+      "app.kubernetes.io/instance": "jptest"  # 针对 jptest 集群
+      "app.kubernetes.io/component": "pd"  # 针对 pd 组件
+  scheduler:
+    cron: "@every 20m"  # 每个20分钟注入一次
