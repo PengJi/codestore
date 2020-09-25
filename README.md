@@ -3,7 +3,7 @@
 [owenliang/k8s-client-go](https://github.com/owenliang/k8s-client-go)
 
 # scheduler
-[angao/scheduler-framework-sample](https://github.com/angao/scheduler-framework-sample)
+[angao/scheduler-framework-sample](https://github.com/angao/scheduler-framework-sample)  
 [cnych/sample-scheduler-framework](https://github.com/cnych/sample-scheduler-framework)
 
 # kubernetes/sample-controller
