@@ -2,7 +2,7 @@
 [client-go example](https://github.com/kubernetes/client-go/tree/master/examples)  
 [owenliang/k8s-client-go](https://github.com/owenliang/k8s-client-go)
 
-# scheduler
+# kubernetes scheduler
 [angao/scheduler-framework-sample](https://github.com/angao/scheduler-framework-sample)  
 [cnych/sample-scheduler-framework](https://github.com/cnych/sample-scheduler-framework)
 
