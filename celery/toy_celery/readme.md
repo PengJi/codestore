@@ -1,3 +1,4 @@
+# 实现简单 celery
 # steps
 1. intall redis  
 `brew install redis`
