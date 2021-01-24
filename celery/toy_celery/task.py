@@ -27,10 +27,13 @@ class BaseTask(abc.ABC):
             raise ValueError("task_name should be set")
         self.broker = Broker()
 
-    # abstractmethod 派生类必须重写实现逻辑
     @abc.abstractmethod
     def run(self, *args, **kwargs):
-        # put your business logic here
+        """
+        Derived classes must override this functions
+
+        put your business logic here
+        """
         raise NotImplementedError("Task `run` method must be implemented.")
 
     def update_state(self, task_id, state, meta={}):

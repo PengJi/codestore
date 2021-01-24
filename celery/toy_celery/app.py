@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-import os
 import random
 import time
 from flask import Flask, request, render_template, url_for, jsonify
 
 from task import BaseTask, async_result
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'top-secret!'

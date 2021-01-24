@@ -4,8 +4,7 @@ import redis
 
 class Backend:
     """
-    use redis as our broker.
-    This implements a basic FIFO queue using redis.
+    use redis to store result.
     """
     def __init__(self):
         host = "localhost"
