@@ -27,13 +27,15 @@ class LongTask(BaseTask):
                 message = '{0} {1} {2}...'.format(random.choice(verb),
                                                   random.choice(adjective),
                                                   random.choice(noun))
-            self.update_state(task_id=task_id, state='PROGRESS',
-                              meta={'current': i, 'total': total,
-                                    'status': message})
+            self.update_state(
+                task_id=task_id, state='PROGRESS', meta={'current': i, 'total': total, 'status': message}
+            )
             time.sleep(1)
 
-        self.update_state(task_id=task_id, state='FINISH',
-                          meta={'current': 100, 'total': 100, 'status': 'Task completed!', 'result': 32})
+        self.update_state(
+            task_id=task_id, state='FINISH',
+            meta={'current': 100, 'total': 100, 'status': 'Task completed!', 'result': 32}
+        )
         return
 
 
