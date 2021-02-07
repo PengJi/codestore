@@ -17,26 +17,26 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RouteGuideClient interface {
-	// A simple RPC.
+	// A simple rpc.
 	//
 	// Obtains the feature at a given position.
 	//
 	// A feature with an empty name is returned if there's no feature at the given
 	// position.
 	GetFeature(ctx context.Context, in *Point, opts ...grpc.CallOption) (*Feature, error)
-	// A server-to-client streaming RPC.
+	// A server-to-client streaming rpc.
 	//
 	// Obtains the Features available within the given Rectangle.  Results are
 	// streamed rather than returned at once (e.g. in a response message with a
 	// repeated field), as the rectangle may cover a large area and contain a
 	// huge number of features.
 	ListFeatures(ctx context.Context, in *Rectangle, opts ...grpc.CallOption) (RouteGuide_ListFeaturesClient, error)
-	// A client-to-server streaming RPC.
+	// A client-to-server streaming rpc.
 	//
 	// Accepts a stream of Points on a route being traversed, returning a
 	// RouteSummary when traversal is completed.
 	RecordRoute(ctx context.Context, opts ...grpc.CallOption) (RouteGuide_RecordRouteClient, error)
-	// A Bidirectional streaming RPC.
+	// A Bidirectional streaming rpc.
 	//
 	// Accepts a stream of RouteNotes sent while a route is being traversed,
 	// while receiving other RouteNotes (e.g. from other users).
@@ -161,26 +161,26 @@ func (x *routeGuideRouteChatClient) Recv() (*RouteNote, error) {
 // All implementations must embed UnimplementedRouteGuideServer
 // for forward compatibility
 type RouteGuideServer interface {
-	// A simple RPC.
+	// A simple rpc.
 	//
 	// Obtains the feature at a given position.
 	//
 	// A feature with an empty name is returned if there's no feature at the given
 	// position.
 	GetFeature(context.Context, *Point) (*Feature, error)
-	// A server-to-client streaming RPC.
+	// A server-to-client streaming rpc.
 	//
 	// Obtains the Features available within the given Rectangle.  Results are
 	// streamed rather than returned at once (e.g. in a response message with a
 	// repeated field), as the rectangle may cover a large area and contain a
 	// huge number of features.
 	ListFeatures(*Rectangle, RouteGuide_ListFeaturesServer) error
-	// A client-to-server streaming RPC.
+	// A client-to-server streaming rpc.
 	//
 	// Accepts a stream of Points on a route being traversed, returning a
 	// RouteSummary when traversal is completed.
 	RecordRoute(RouteGuide_RecordRouteServer) error
-	// A Bidirectional streaming RPC.
+	// A Bidirectional streaming rpc.
 	//
 	// Accepts a stream of RouteNotes sent while a route is being traversed,
 	// while receiving other RouteNotes (e.g. from other users).

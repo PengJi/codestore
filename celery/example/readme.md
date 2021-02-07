@@ -1,1 +1,1 @@
-Celery use example
+Celery using example
