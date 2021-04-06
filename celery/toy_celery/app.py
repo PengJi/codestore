@@ -9,7 +9,6 @@ from task import BaseTask, async_result
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'top-secret!'
 
-
 class LongTask(BaseTask):
     task_name = "LongTask"
 
