@@ -57,3 +57,16 @@ if [[ $(get_os_version) =~ "CentOS Linux release 7.0" ]]; then
         check_cmd echo -e "HWADDR=${mac}" >> "${tmp_conf}"
     fi
 fi
+
+
+# operators order
+"A ; B"  # Run A and then B, regardless of success of A
+"A && B"  # Run B if A succeeded
+"A || B"  # Run B if A failed
+"A &"  # Run A in background.
+false && echo howdy!
+true && echo howdy!
+howdy!
+true || echo howdy!
+false || echo howdy!
+howdy!
