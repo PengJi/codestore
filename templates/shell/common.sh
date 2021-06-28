@@ -1,3 +1,16 @@
+# specify the interpreter path
+#!/usr/bin/env bash
+#!/usr/bin/env python
+
+# output redirection
+>/dev/null 2>&1
+
+# output stdout
+> &1
+
+# output stderr
+> &2
+
 # if
 if [[ -f "/etc/os-release" ]]; then
     os_type=$(cat /etc/os-release | grep PRETTY_NAME)
@@ -7,6 +20,8 @@ if [[ -f "/etc/os-release" ]]; then
     elif [[ ${os_type} =~ "ubuntu" ]]; then
         echo "ubuntu"
         return
+    else
+        echo "not found"
     fi
 fi
 
@@ -57,6 +72,28 @@ if [[ $(get_os_version) =~ "CentOS Linux release 7.0" ]]; then
         check_cmd echo -e "HWADDR=${mac}" >> "${tmp_conf}"
     fi
 fi
+
+
+# split string
+# first
+string="hello,shell,haha"
+array=(${string//,/ }) 
+for var in ${array[@]}
+do
+  echo $var
+done
+# second
+export IFS=","
+for ntp_server in $1; do
+    echo $ntp_server
+done
+# third
+string="one,two,three,four,five"
+array=(`echo $string | tr ',' ' '` ) 
+for var in ${array[@]}
+do
+  echo $var
+done
 
 
 # operators order
