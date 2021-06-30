@@ -66,7 +66,8 @@ class BaseTask(abc.ABC):
 
 def async_result(task_id):
     """
-    get result
+    get task stat.
+    You can call this function to get the execution status of the task
     """
     backend = Backend()
     _dequeued_item = backend.dequeue(queue_name=task_id)
