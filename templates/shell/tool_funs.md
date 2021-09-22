@@ -27,13 +27,10 @@ howdy!
 # 字符串
 ## 字符串包含
 ```sh
-if [[ $(get_os_version) =~ "CentOS Linux release 7.0" ]]; then
-    grep "HWADDR" "${tmp_conf}"
-    if [ $? -eq 0 ]; then
-        check_cmd sed -i 's/HWADDR=.*/HWADDR='"${mac}"'/g' "${tmp_conf}"
-    else
-        check_cmd echo -e "HWADDR=${mac}" >> "${tmp_conf}"
-    fi
+if [[ "hello world" =~ "hello" ]]; then
+    echo "包含"
+else
+    echo "不包含"
 fi
 ```
 
@@ -47,11 +44,13 @@ for var in ${array[@]}
 do
   echo $var
 done
+
 # 第二种方式
 export IFS=","
 for ntp_server in $1; do
     echo $ntp_server
 done
+
 # 第三种方式
 string="one,two,three,four,five"
 array=(`echo $string | tr ',' ' '` ) 
@@ -62,7 +61,7 @@ done
 ```
 
 
-重试
+# 重试
 [How do I write a retry logic in script to keep retrying to run it upto 5 times?](https://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times)
 ```sh
 for i in 1 2 3 4 5; do
@@ -77,7 +76,7 @@ done
 ```
 
 
-校验命令是否执行成功
+# 校验命令是否执行成功
 ```sh
 function check_cmd {
     "$@"
@@ -91,7 +90,7 @@ check_cmd shell_command
 ```
 
 
-解析 yaml 文件
+# 解析 yaml 文件
 ```sh
 function parse_yaml {
     local yaml_file=$1
