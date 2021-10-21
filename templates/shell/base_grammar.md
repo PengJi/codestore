@@ -40,9 +40,20 @@ if [ -n "${TEAM_MASTER}" ] && [ ! "${DEVICETYPE}" = "TeamPort" ] && [ -x ./ifup-
 fi
 ```
 
+# 数组
+遍历数组
+```sh
+OLD_IFS=$IFS
+IFS=","
+for dns_server in ${dns_servers}; do
+    tmp_dns_servers+=($dns_server)
+done
+IFS=$OLD_IFS
+```
+
 
 ## switch
-```bash
+```sh
 case "$(get_network_config)" in
     eni)
         by_eni $1 $2 $3 $4
