@@ -24,43 +24,6 @@ howdy!
 ```
 
 
-# 字符串
-## 字符串包含
-```sh
-if [[ "hello world" =~ "hello" ]]; then
-    echo "包含"
-else
-    echo "不包含"
-fi
-```
-
-
-## 分割字符串
-```sh
-# 第一种方式
-string="hello,shell,haha"
-array=(${string//,/ }) 
-for var in ${array[@]}
-do
-  echo $var
-done
-
-# 第二种方式
-export IFS=","
-for ntp_server in $1; do
-    echo $ntp_server
-done
-
-# 第三种方式
-string="one,two,three,four,five"
-array=(`echo $string | tr ',' ' '` ) 
-for var in ${array[@]}
-do
-  echo $var
-done
-```
-
-
 # 重试
 [How do I write a retry logic in script to keep retrying to run it upto 5 times?](https://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times)
 ```sh

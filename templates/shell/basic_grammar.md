@@ -17,9 +17,60 @@
 # 输出到标准输出
 > &1
 
-# 输出到标准输入
+# 输出到错误输出
 > &2
 ```
+
+
+# 数据结构
+## 字符串
+### 字符串包含
+```sh
+if [[ "hello world" =~ "hello" ]]; then
+    echo "包含"
+else
+    echo "不包含"
+fi
+```
+
+### 分割字符串
+```sh
+# 第一种方式
+string="hello,shell,haha"
+array=(${string//,/ }) 
+for var in ${array[@]}
+do
+  echo $var
+done
+
+# 第二种方式
+OLD_IFS=$IFS
+IFS=","
+for ntp_server in $1; do
+    echo $ntp_server
+done
+IFS=$OLD_IFS
+
+# 第三种方式
+string="one,two,three,four,five"
+array=(`echo $string | tr ',' ' '` ) 
+for var in ${array[@]}
+do
+  echo $var
+done
+```
+
+## 数组
+遍历数组
+```sh
+OLD_IFS=$IFS
+IFS=","
+for dns_server in ${dns_servers}; do
+    tmp_dns_servers+=($dns_server)
+done
+IFS=$OLD_IFS
+```
+
 
 # 控制流
 ## if
@@ -44,22 +95,10 @@ if [ -n "${TEAM_MASTER}" ] && [ ! "${DEVICETYPE}" = "TeamPort" ] && [ -x ./ifup-
 fi
 ```
 
-# 数组
-遍历数组
-```sh
-OLD_IFS=$IFS
-IFS=","
-for dns_server in ${dns_servers}; do
-    tmp_dns_servers+=($dns_server)
-done
-IFS=$OLD_IFS
-```
-
-
 ## switch
 ```sh
 case "$(get_network_config)" in
-    eni)
+    rhel|centos||fedora)
         by_eni $1 $2 $3 $4
         ;;
     sysconfig)
