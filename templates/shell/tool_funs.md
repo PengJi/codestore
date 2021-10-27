@@ -8,6 +8,22 @@ function get_network_config {
 $(get_network_config)
 ```
 
+# 使用 main
+```sh
+#!/usr/bin/env bash
+func1(){
+    #do sth
+}
+func2(){
+    #do sth
+}
+main(){
+    func1
+    func2
+}
+main "$@" 
+```
+
 
 # 逻辑运算符
 ```sh
