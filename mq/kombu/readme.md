@@ -1,5 +1,5 @@
 # kombu
-kombu 实现对 AMQP 的封装，对 AMQP transport和non-AMQP transports(Redis、Amazon SQS、ZoopKeeper等)的兼容。
+kombu 实现对 AMQP 的封装，对 AMQP transport和 non-AMQP transports(Redis、Amazon SQS、ZoopKeeper等)的兼容。
 通过amqp 收发消息的过程：
 * 消息从来不直接发送给队列，甚至 Producers 都可能不知道队列的存在。 消息是发送给交换机，给交换机发送消息时，需要指定消息的 routing_key 属性！
 * 交换机收到消息后，根据 交换机的类型，或直接发送给队列 (fanout)， 或匹配消息的 routing_key 和 队列与交换机之间的 banding_key ;
