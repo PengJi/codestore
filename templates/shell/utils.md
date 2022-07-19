@@ -14,9 +14,11 @@ $(get_network_config)
 func1(){
     #do sth
 }
+
 func2(){
     #do sth
 }
+
 main(){
     func1
     func2
@@ -31,9 +33,11 @@ main "$@"
 "A && B"  # Run B if A succeeded
 "A || B"  # Run B if A failed
 "A &"  # Run A in background.
+
 false && echo howdy!
 true && echo howdy!
 howdy!
+
 true || echo howdy!
 false || echo howdy!
 howdy!
@@ -45,7 +49,7 @@ howdy!
 ```sh
 for i in 1 2 3 4 5; do
     for eth_file in $(ls /sys/class/net/*/address); do
-        if [ "$1" == "$(cat $eth_file)" ]; then
+        if [[ "$1" == "$(cat $eth_file)" ]]; then
             interface=$(echo $eth_file | awk -F/ '{print $5}')
             break
         fi
