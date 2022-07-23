@@ -1,7 +1,24 @@
-# best practices
-1. 在函数内定义局部变量时，指定 `local`；
-2. 定义全局变量时，指定`readonly`；
+# Best Practices
+1. 使用 `local` 在函数内定义局部变量，使用 `readonly` 定义全局变量；
+2. 使用$()代替\`(反单引号)；
+   * $()能够支持内嵌；
+   * $()不用转义；
+   ```sh
+   echo "A-`echo B-\`echo C-\\\`echo D\\\`\``"  # out: A-B-C-D
+   echo "A-$(echo B-$(echo C-$(echo D)))"  # out: A-B-C-D
+   ```
 3. 尽量使用 `[[]]` 来代替 `[]`；
+   * 避免转义问题；
+   * 有不少新功能，包括但不限于：
+   （1）|| ：逻辑or
+   （2）&& ：逻辑and
+   （3）< ：字符串比较（不需要转义）
+   （4）== ：通配符(globbing)字符串比较
+   （5）=~ ：正则表达式(regular expression, RegEx)字符串比较
+   ```sh
+   [ "${name}" \> "a" -o "${name}" \< "z" ]
+   [[ "${name}" > "a" && "${nmae}" < "z" ]]
+   ```
 4. 简单的 `if` 尽量使用` && ||` 写成单行，比如 `[[ x > 2]] && echo x`；
 5. 利用 `/dev/null` 过滤不友好的输出信息；
 6. 利用命令的返回值判断命令的执行情况；
@@ -22,16 +39,29 @@
 
 
 # 控制 shell 执行方式
-`set -e`
+`set -e`  或 `set -o errexit`
 如果脚本中任意命令执行失败（具有非零的退出状态），则 bash 立即退出。  
 这种行为同编程语言类似，如：python、c 等，其中任何语句执行失败，则程序立即退出，不执行后续命令。  
-默认情况下，在执行脚本时若遇到错误命令，则 bash 会继续执行后面命令，整个脚本退出码是成功的，这种行为容易忽略错误。
+默认情况下，在执行脚本时若遇到错误命令，则 bash 会继续执行后面命令，整个脚本退出码是成功的，这种行为容易忽略错误。  
+符合 fail fast 设计理念。
 ```sh
 #!/bin/bash
 set -e
 
 hello  # 立即退出
 echo "Hello"
+```
+
+`set -u` 或 `set -o nounset`
+执行脚本时，除了 $* 和 $@，遇到任何未定义的变量都会报错并立即退出。  
+这种行为同编程语言类似，如：python、c 等，变量必须先定义再引用。  
+符合 fail fast 设计理念。
+```sh
+#!/usr/bin/env bash
+echo $test  # 输出空
+
+set -u
+echo $hello  # 报错：hello: unbound variable
 ```
 
 `set -x`
@@ -51,17 +81,6 @@ fi
 # + [[ -f /dev/sr0 ]]
 # + echo world
 # world
-```
-
-`set -u`
-执行脚本时，除了 $* 和 $@，遇到任何未定义的变量都会报错并立即退出。  
-这种行为同编程语言类似，如：python、c 等，变量必须先定义再引用。
-```sh
-#!/usr/bin/env bash
-echo $test  # 输出空
-
-set -u
-echo $hello  # 报错：hello: unbound variable
 ```
 
 `set -o pipefail`

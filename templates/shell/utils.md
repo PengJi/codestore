@@ -44,18 +44,14 @@ howdy!
 ```
 
 
-# 重试
-[How do I write a retry logic in script to keep retrying to run it upto 5 times?](https://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times)
+# 记录日志
 ```sh
-for i in 1 2 3 4 5; do
-    for eth_file in $(ls /sys/class/net/*/address); do
-        if [[ "$1" == "$(cat $eth_file)" ]]; then
-            interface=$(echo $eth_file | awk -F/ '{print $5}')
-            break
-        fi
-    done
-    [[ ! -z $interface ]] && break || sleep 1
-done
+function log {
+    local prefix="[$(date +%Y-%m-%d\ %H:%M:%S)]"
+    echo "${prefix} $@" >&2
+}
+
+log "INFO" "message"
 ```
 
 
@@ -70,6 +66,21 @@ function check_cmd {
     fi
 }
 check_cmd shell_command
+```
+
+
+# 重试
+[How do I write a retry logic in script to keep retrying to run it upto 5 times?](https://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times)
+```sh
+for i in 1 2 3 4 5; do
+    for eth_file in $(ls /sys/class/net/*/address); do
+        if [ "$1" == "$(cat $eth_file)" ]; then
+            interface=$(echo $eth_file | awk -F/ '{print $5}')
+            break
+        fi
+    done
+    [[ ! -z $interface ]] && break || sleep 1
+done
 ```
 
 
