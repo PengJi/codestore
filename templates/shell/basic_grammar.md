@@ -18,14 +18,31 @@
    ```sh
    [ "${name}" \> "a" -o "${name}" \< "z" ]
    [[ "${name}" > "a" && "${nmae}" < "z" ]]
+   # 字符串替换
+   var="abc123"
+   [[ "$var" == abc* ]]  # 正则匹配，true
+   [[ "$var" == "abc*" ]]  # 字面比较，false
+   [[ "$var" =~ [abc]+[123]+ ]]  # 正则匹配，true
+   # 注意：从bash3.2开始，通配符和正则表达式都不能用引号包裹了（所以，上面的例子，加了引号就是字面比较）。
+
+   var="a b+"
+   [[ "a bbb" =~ $var ]]
+   # 如果表达式里含有空格，则必须存储到一个变量里，再进行通配符与正则比较。
    ```
 4. 简单的 `if` 尽量使用` && ||` 写成单行，比如 `[[ x > 2]] && echo x`；
 5. 利用 `/dev/null` 过滤不友好的输出信息；
 6. 利用命令的返回值判断命令的执行情况；
 7. 使用文件前要判断文件是否存在，否则做好异常处理；
-8. 使用 `mktemp` 生成临时文件或文件夹，
+8. 使用封装提高代码的可读性；
+   ```sh
+   function ExtractComments {
+     egrep "^#"
+   }
+   cat test.sh | ExtractComments | wc
+   ```
+9. 使用 `mktemp` 生成临时文件或文件夹，
    参考：[mktemp 命令和 trap 命令教程](http://www.ruanyifeng.com/blog/2019/12/mktemp.html)；
-9. 会使用 `trap` 捕获信号，并在接受到终止信号时执行一些收尾工作，例如：`trap 'rm -f "$TMPFILE"' EXIT`，
+10. 会使用 `trap` 捕获信号，并在接受到终止信号时执行一些收尾工作，例如：`trap 'rm -f "$TMPFILE"' EXIT`，
    参考：[trap信号捕捉用法详解](https://www.junmajinlong.com/shell/script_course/shell_trap/)；
 
 
@@ -110,6 +127,23 @@ echo $?
 
 # 输出到错误输出
 > &2
+```
+
+
+# 调试
+```sh
+# 对脚本进行语法检查
+bash -n test.sh
+
+# 跟踪每个命令的执行
+bash -v test.sh
+# 或
+set -o verbose
+
+# 跟踪每个命令的执行，并附加扩充信息
+bash -x test.sh
+# 或
+set -o xtrace
 ```
 
 
