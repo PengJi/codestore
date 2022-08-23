@@ -40,9 +40,10 @@
    }
    cat test.sh | ExtractComments | wc
    ```
-9. 使用 `mktemp` 生成临时文件或文件夹，
+9. 为防止变量中含有空格，对变量使用双引号，如："${var}"；
+10. 使用 `mktemp` 生成临时文件或文件夹，
    参考：[mktemp 命令和 trap 命令教程](http://www.ruanyifeng.com/blog/2019/12/mktemp.html)；
-10. 会使用 `trap` 捕获信号，并在接受到终止信号时执行一些收尾工作，例如：`trap 'rm -f "$TMPFILE"' EXIT`，
+11. 会使用 `trap` 捕获信号，并在接受到终止信号时执行一些收尾工作，例如：`trap 'rm -f "$TMPFILE"' EXIT`，
    参考：[trap信号捕捉用法详解](https://www.junmajinlong.com/shell/script_course/shell_trap/)；
 
 
@@ -90,6 +91,8 @@ set -x
 
 if [[ -f "/dev/sr0" ]]; then  # 输出控制流
     echo "hello"
+elif [[ -f "/dev/sr1" ]]; then
+    echo "hi"
 else
     echo "world"
 fi
