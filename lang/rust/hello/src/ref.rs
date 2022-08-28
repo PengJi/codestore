@@ -42,8 +42,8 @@ fn test_ref() {
     let ms = &mut s1;
     modify_s(&ms);
 
-    println!("s1 = {}", s1); // error，已经借用了，所以这里不可访问
-    println!("s = {}", s);  //error，已经借用了，所以这里不可访问
+    // println!("s1 = {}", s1); // error，已经借用了，所以这里不可访问
+    // println!("s = {}", s);  // error，已经借用了，所以这里不可访问
     println!("ms = {}", ms);
 }
 
@@ -56,7 +56,7 @@ fn test_ref1() {
 
     let r3 = &mut s1;
     r3.push_str(", world");
-    println!("{}, {}", r1, r2);  // 出错
+    // println!("{}, {}", r1, r2);  // error, 已被借用
 }
 
 fn fake_main() {

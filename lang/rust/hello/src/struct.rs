@@ -1,7 +1,8 @@
 // 结构体
-fn test_struct() {
-    #[drive(Debug)]  // 打印结构体
 
+#[drive(Debug)]  // 打印结构体
+
+fn test_struct() {
     // 1. 定义结构体
     struct User {
         name: String,
@@ -90,8 +91,6 @@ impl Dog {
 }
 
 fn test_impl() {
-    #[derive(Debug)]
-
     let dog = Dog {
         name: String::from("wangwang"),
         weight: 90.0,

@@ -1,6 +1,14 @@
 // 数据类型
 
-fn learn_type() {
+fn  show(arr:[u32; 3]) {
+    println!("---------------------");
+    for i in &arr {
+        println!("{}", i);
+    }
+    println!("---------------------");
+}
+
+fn fake_main() {
     //char 在rust里面，char是32位的
     let a = 'a';
     println!("a = {}", a);
@@ -27,12 +35,4 @@ fn learn_type() {
     println!("{}", x);
     println!("{}", y);
     println!("{}", z);
-}
-
-fn  show(arr:[u32; 3]) {
-    println!("---------------------");
-    for i in &arr {
-        println!("{}", i);
-    }
-    println!("---------------------");
 }
