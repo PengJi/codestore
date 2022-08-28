@@ -71,5 +71,8 @@ fn main() {
     let result = hasher.result_str();
     println!("hash = {}", result);
 
+    println!("============= error =================");
+    
+
     println!("hello world");
 }

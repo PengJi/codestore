@@ -14,9 +14,10 @@ rustup self uninstall
 rustc --version
 
 ### cargo 使用
-`cargo new hello`
-`cargo build`
-`cargo build --release`  
-`cargo new --lib mylib`
-`cargo run`  
-`cargo check` 
+新建项目：`cargo new hello`  
+只编译检查，不生成可执行文件：`cargo check`  
+调试模式构建：`cargo build`  
+发布模式构建：`cargo build --release`  
+创建 lib：`cargo new --lib mylib`  
+运行：`cargo run`  
+打印堆栈：`RUST_BACKTRACE=1 cargo run`  
