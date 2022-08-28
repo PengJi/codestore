@@ -14,7 +14,9 @@ rustup self uninstall
 rustc --version
 
 ### cargo 使用
+`cargo new hello`
 `cargo build`
 `cargo build --release`  
+`cargo new --lib mylib`
 `cargo run`  
 `cargo check` 

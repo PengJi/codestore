@@ -1,10 +1,8 @@
 [package]
-name = "hello"
+name = "mylib"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-mylib = {path = "./mylib"}
-rust-crypto = "0.2"
