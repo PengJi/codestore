@@ -1,1 +1,4 @@
+# for rust
 target/
+Cargo.lock
+
