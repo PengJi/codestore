@@ -1,3 +1,5 @@
+// vector
+
 fn fake_main() {
     // 1. 创建空的 vector: Vec<T>
     let mut v: Vec<i32> = Vec::new();

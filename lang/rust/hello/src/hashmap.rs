@@ -1,3 +1,5 @@
+// hashmap
+
 use std::collections::HashMap;
 
 fn fake_main() {

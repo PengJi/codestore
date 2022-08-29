@@ -1,5 +1,4 @@
-match 提取值
-match 一定要匹配完
+// Option
 
 // 1. Option 是标准库定义的一个枚举，形式：
 // enum Option<T> {
@@ -17,7 +16,7 @@ fn fake_main() {
     let x: i32 = 5;
     let y: Option<i32> = Some(5);
     let mut temp = 0;
-    match y {
+    match y {  // match 匹配值，一定要匹配完所有元素
         Some(i) => {temp = i; }
         None => {println!("do something");}
     }

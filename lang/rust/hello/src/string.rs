@@ -1,3 +1,5 @@
+// 字符串
+
 fn fake_main {
     // 1. 创建一个空 String
     let mut s0 = String::new();

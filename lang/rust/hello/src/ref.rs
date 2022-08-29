@@ -1,3 +1,5 @@
+// 引用
+
 fn give_ownership() -> String {
     let s = String::from("hello");
     s
