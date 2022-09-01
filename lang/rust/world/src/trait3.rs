@@ -1,4 +1,5 @@
 // 泛型和 trait 使用
+// 类型 T 必须实现了 PartialOrd 和 Copy
 //fn largest<T: PartialOrd + Copy> (list: &[T]) -> T {  // 或
 fn largest<T> (list: &[T]) -> T
     where T: PartialOrd + Copy

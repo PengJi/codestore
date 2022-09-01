@@ -70,20 +70,20 @@ impl GetAge for Teacher {
 
 // 错误的用法
 // 必须返回同一种类型，尽管 Teaher 实现了同样的 trait，这里也会报错，必须是一个类型 
-fn produce_item_with_age_error() -> impl GetAge {
-    let is = true;
-    if is {
-        Student {
-            name: Stirng::from("xiaoming"),
-            age: 15,
-        }
-    } else {
-        Teacher {
-            name: String::from("xiaoliang"),
-            age: 20,
-        }
-    }
-}
+// fn produce_item_with_age_error() -> impl GetAge {
+//     let is = true;
+//     if is {
+//         Student {
+//             name: Stirng::from("xiaoming"),
+//             age: 15,
+//         }
+//     } else {
+//         Teacher {
+//             name: String::from("xiaoliang"),
+//             age: 20,
+//         }
+//     }
+// }
 
 fn fake_main() {
     let s = Student(name: "xiaoming".to_string(), age: 10);
