@@ -1,4 +1,5 @@
 // 使用 trait bound 有条件的实现方法
+
 trait GetName {
     fn get_name(&self) -> &String;
 }
@@ -12,7 +13,7 @@ struct PeopleMatchInfo<T, U> {
     student: U,
 }
 
-impl<T: GetName+GetAge>, U: GetName+GetAge> PeopleMatchInfo<T, U> {
+impl<T: GetName+GetAge, U: GetName+GetAge> PeopleMatchInfo<T, U> {
     fn print_all_information(&self) {
         println!("master name = {}", self.master.get_name());
         println!("master age = {}", self.master.get_age());
@@ -45,12 +46,14 @@ struct Student {
 
 impl GetName for Student {
     fn get_name(&self) -> &String {
-        &(self.name)
+        &self.name
+    }
 }
 
 impl GetAge for Student {
     fn get_age(&self) -> u32 {
         self.age
+    }
 }
 
 fn fake_main() {

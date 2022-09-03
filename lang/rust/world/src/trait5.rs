@@ -1,5 +1,3 @@
-如果泛型 T 实现了 GetName，则可实现 PrintName
-
 // 对任何实现了特定 trait 的类型有条件的实现 trait
 
 trait GetName {
@@ -10,7 +8,8 @@ trait PrintName {
     fn print_name(&self);
 }
 
-// 类型 T 必须实现 trait GetName
+// 如果泛型 T 实现了 GetName，则可实现 PrintName
+// 泛型 T 必须实现 trait GetName
 impl<T: GetName> PrintName for T {
     fn print_name(&self) {
         println!("{}", self.get_name());

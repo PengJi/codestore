@@ -1,4 +1,4 @@
-// 1. trait bound 的写法
+// 1. trait bound（对类型的约束） 的写法
 // fn print_information(item: impl GetInformation) {}  // 直接作为参数的写法
 // fn print_information<T: GetInformation>(item: T) {  // 使用 trait bound 的写法
 //     println!("name = {}", item.name);
@@ -49,7 +49,7 @@ impl GetAge for Student {
 }
 
 // 3. 返回值为 trait
-// 当 trait 作为返回子，要求返回的对象实现 GetAge
+// 当 trait 作为返回值，要求返回的对象实现 GetAge
 fn produce_item_with_age() -> impl GetAge {
     Student {
         name: Stirng::from("xiaoming"),
