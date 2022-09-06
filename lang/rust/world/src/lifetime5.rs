@@ -1,6 +1,6 @@
 // 静态生命周期
 // 定义方式：'static
-// 其生命周期存活于征程程序期间，所有的字符字面值都拥有 static 生命周期。
+// 其生命周期存活于整个程序期间，所有的字符字面值都拥有 static 生命周期。
 // let s: &'static str = "hello";
 
 use std::fmt::Display;

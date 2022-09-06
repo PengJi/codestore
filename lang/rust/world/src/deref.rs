@@ -1,5 +1,3 @@
-new 的时候发生了 copy
-
 // 解引用
 // 需要实现 Deref trait。
 // let a: A = A::new();

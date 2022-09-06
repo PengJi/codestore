@@ -2,9 +2,9 @@
 // 实现一个缓存，只处理第一次传入的值并保存
 
 struct Cacher<T> 
-    where T: Fn(u32) -> u32  // 特征为一个闭包 
+    where T: Fn(u32) -> u32  // trait 为一个闭包 
 {
-    calcuation: T,  // T 要求实现 Fn，相当与一个回调
+    calcuation: T,  // T 要求实现trait Fn，相当与一个回调
     value: Option<u32>,
 }
 
