@@ -17,7 +17,7 @@ trait GetAge {
 // 写法一
 // 使用 trait bound 的写法
 // 尖括号里面的是泛型T，后面是对 T 的约束，参数 item 的类型为 T
-fn print_information<T: GetName+GetAge>(item: T) {
+fn print_information<T: GetName+GetAge> (item: T) {
     println!("name = {}", item.get_name());
     println!("age = {}", item.get_age());
 }
