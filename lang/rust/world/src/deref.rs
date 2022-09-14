@@ -1,4 +1,5 @@
 // 解引用
+
 // 需要实现 Deref trait。
 // let a: A = A::new();
 // let b = &b;

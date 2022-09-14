@@ -6,8 +6,8 @@
 //
 // 当编写一个函数，但是该函数可能会失败，此时除了在函数中处理错误外，还可以将错误传给调用者，让调用者决定如何处理，这被称为传播错误。
 //
-// 什么时候用panic！，什么时候用Result
-// (1)示例、代码原型、测试用panic!\unwrap\expect
+// 什么时候用 panic！，什么时候用 Result
+// (1)示例、代码原型、测试用 panic!\unwrap\expect
 // (2)实际项目中应该用Result
 //
 // Option和Result

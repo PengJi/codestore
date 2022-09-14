@@ -55,7 +55,7 @@ impl Message {
 fn fake_main() {
     // C 语言方式
     let i1 = IpAddr {
-        kind: IpAddrKind:: v4,
+        kind: IpAddrKind::v4,
         address: String::from("127.0.0.1"),
     }
 

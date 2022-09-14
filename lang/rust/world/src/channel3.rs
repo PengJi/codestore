@@ -1,3 +1,5 @@
+// 通道
+
 use std::thread;
 use std::sync::mpsc;
 use std:time::Duration;
