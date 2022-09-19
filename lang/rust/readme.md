@@ -44,3 +44,6 @@ rustc --version
 运行：`cargo run`  
 打印堆栈：`RUST_BACKTRACE=1 cargo run`  
 生成文档：`cargo doc --open`
+
+## 参考
+[anonymousGiga/learn_rust](https://github.com/anonymousGiga/learn_rust)
