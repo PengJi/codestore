@@ -5,4 +5,5 @@ with pytest.raises(SVTInvalidArgument) as excinfo:
         properties["properties"], ["hostname"], ""
     )
 assert "Hostname can not be empty" in str(excinfo.value)
+assert excinfo.value.user_code = ERROR_CODE
 ```
