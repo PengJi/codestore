@@ -16,3 +16,10 @@ datetime.datetime(2013, 2, 7, 17, 30, 3)
 >>> dt.strftime('%Y-%m-%dT%H:%M:%S.%f')
 '2013-02-07T17:30:03.083988'
 ```
+
+### elapsed time
+```py 
+import monotonic
+start_time = monotonic.monotonic()
+elapsed_time = int(monotonic.monotonic() - start_time)
+```
