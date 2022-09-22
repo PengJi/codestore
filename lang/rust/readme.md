@@ -56,7 +56,7 @@ rustc --version
 创建 lib：`cargo new --lib mylib`  
 运行：`cargo run`  
 打印堆栈：`RUST_BACKTRACE=1 cargo run`  
-生成文档：`cargo doc --open`
+生成文档（在浏览器中打开当前项目用到的库的文件）：`cargo doc --open`
 
 ## 参考
 [anonymousGiga/learn_rust](https://github.com/anonymousGiga/learn_rust)
