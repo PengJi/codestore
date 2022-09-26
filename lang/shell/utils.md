@@ -27,23 +27,6 @@ main "$@"
 ```
 
 
-# 逻辑运算符
-```sh
-"A ; B"  # Run A and then B, regardless of success of A
-"A && B"  # Run B if A succeeded
-"A || B"  # Run B if A failed
-"A &"  # Run A in background.
-
-false && echo howdy!
-true && echo howdy!
-howdy!
-
-true || echo howdy!
-false || echo howdy!
-howdy!
-```
-
-
 # 记录日志
 ```sh
 function log {
@@ -83,3 +66,14 @@ for i in 1 2 3 4 5; do
 done
 ```
 
+
+## 使用 heredocs
+一种多行输入的方法。
+```sh
+cat>>/etc/rsyncd.conf << EOF
+log file = /usr/local/logs/rsyncd.log
+transfer logging = yes
+log format = %t %a %m %f %b
+syslog facility = local3
+EOF
+```

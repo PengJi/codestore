@@ -2,12 +2,17 @@
 搜索目标行和前后 10 行
 `grep -10 dd.txt`
 
+避免出现一些不可预知的问题使用 `-w`
+`grep -w "a sentence" txt`
+
 
 # sed
 替换
 ```sh
 # 将 `/dev/sd` 替换为 `/dev/vd`，用 `#` 当标识符 
 sed -i "s#/dev/sd#/dev/vd#g" /etc/fstab
+# 选项：
+# -i 修改源文件 
 ```
 
 删除

@@ -1,4 +1,4 @@
-# Best Practices
+# 最佳实践
 1. 使用 `local` 在函数内定义局部变量，使用 `readonly` 定义全局变量；
 2. 使用$()代替\`(反单引号)；
    * $()能够支持内嵌；
@@ -53,6 +53,36 @@
 #!/bin/bash
 #!/usr/bin/env bash 
 #!/usr/bin/env python
+```
+
+
+# 输出重定向
+```sh
+# 禁止输出 stdout 和 stderr
+>/dev/null 2>&1
+
+# 输出到标准输出
+> &1
+
+# 输出到错误输出
+> &2
+```
+
+
+# 逻辑运算符
+```sh
+"A ; B"  # Run A and then B, regardless of success of A
+"A && B"  # Run B if A succeeded
+"A || B"  # Run B if A failed
+"A &"  # Run A in background.
+
+false && echo howdy!
+true && echo howdy!
+howdy!
+
+true || echo howdy!
+false || echo howdy!
+howdy!
 ```
 
 
@@ -117,19 +147,6 @@ set -o pipefail
 grep some-string /non/exist/file | sort
 echo $?
 # 整条命令管道的返回码为 2。
-```
-
-
-# 输出重定向
-```sh
-# 禁止输出 stdout 和 stderr
->/dev/null 2>&1
-
-# 输出到标准输出
-> &1
-
-# 输出到错误输出
-> &2
 ```
 
 
@@ -244,17 +261,4 @@ case "$(get_network_config)" in
         exit 1
         ;;
 esac
-```
-
-
-# 其他
-## 使用 heredocs
-一种多行输入的方法。
-```sh
-cat>>/etc/rsyncd.conf << EOF
-log file = /usr/local/logs/rsyncd.log
-transfer logging = yes
-log format = %t %a %m %f %b
-syslog facility = local3
-EOF
 ```
