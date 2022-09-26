@@ -32,3 +32,4 @@ Intel VT-d 硬件辅助虚拟化
 ## exercises
 [使用Rust实现vhost-user设备](https://github.com/oscomp/proj129-vhost-user-devices-in-rust)  
 [用Rust语言重写Linux kernel中的KVM](https://github.com/oscomp/proj178-kvm-in-rust)  
+[深入 virio-fs]
