@@ -13,7 +13,6 @@ $ echo $OLDPWD
 $ cd $OLDPWD
 $ pwd
 /dir/a
-
 ```
 
 pushd 和 popd 是对一个目录栈进行操作，目录栈以栈结构保存目录，栈顶永远存放着当前目录。  

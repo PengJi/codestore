@@ -1,5 +1,5 @@
 ## 介绍
-Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助，2010年首次发布 0.1.0 版本，用于Servo 引擎的研发，2015 年 rust 发布 1.0 版本。 
+Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助，2010年首次发布 0.1.0 版本，用于 Servo 引擎的研发，2015 年 rust 发布 1.0 版本。 
 * 2015-2018 工具、文档、编译器更加智能  
 * 2018-2021 异步生态完善  
 
@@ -10,7 +10,6 @@ Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助�
 * 生产力（Porductive）让工作事半功倍。
 * 透明性（Transparent）让用户可以预测和控制底层细节。
 * 多样性（Versatile）用 Rust 做任何事。
-
 
 ### rust 基础
 通用编程概念  
@@ -32,6 +31,7 @@ trait
 线程  
 面向对象  
 高级特征  
+
 
 ## 安装
 `curl https://sh.rustup.rs -sSf | sh`  
