@@ -111,14 +111,15 @@ stack frame │ • │ 6 │
 ```
 
 # 应该使用哪一种
-这取决于多种因素，但一般地，如果我们的程序不需要拥有或者修改文本，那么应该使用 &str 而不是 String，因此一个合理的改进是：
+这取决于多种因素，但一般地，如果我们的程序不需要拥有或者修改文本（只读），那么应该使用 &str 而不是 String，因此一个合理的改进是：
 ```rust
 fn greet(name: &str) {
     println!("Hello, {}!", name);
 }
 ```
 
-有一种情况，函数参数要求必须是 &str，但由于某些未知原因，String 类型不能转为 &str，rust 也可以处理这种情况。Rust 有一个特征叫做 deref coercing，这个特征允许把带有借用操作符的 String，即 &String，在函数执行前转成 &str。
+有一种情况，函数参数要求必须是 &str，但由于某些未知原因，String 类型不能转为 &str，rust 也可以处理这种情况。
+Rust 有一个特征叫做 deref coercing，这个特征允许把带有借用操作符的 String，即 &String，在函数执行前转成 &str，即 &String 可以当做是 &str。
 ```rust
 fn main() {
     let first_name = "Pascal";
@@ -133,5 +134,55 @@ fn greet(name: &str) {
 }
 ```
 
+# 其他示例
+
+## String 类型与 &str 的特征
+```rust
+let mut s = String::from("Hello Rust");  // String 类型
+println!("{}", s.capacity());    // prints 12
+s.push_str("Here I come!");
+println!("{}", s.len()); // prints 24
+
+let s = "Hello, Rust!";  // &str 类型
+println!("{}", s.capacity()); // compile error: no method named `capacity` found for type `&str`
+println!("{}", s.len()); // prints 12
+```
+
+## 类型转换
+
+### &str -> String
+使用 `to_string()` 或 `String::from()`
+```rust
+let a = "hello world";  // &str
+let c = a.to_string();
+let d = a.to_owned();
+
+let b = "OK";
+let d = String::from(b);
+```
+
+### String -> &str
+使用 `&` 或 `as_str()`
+```rust
+let e = &String::from("Hello Rust");
+
+// 或使用as_str()
+let m = String::from("Hello Rust");
+let n = m.as_str();
+
+// 不能直接这样使用 
+// let e = String::from("Hello Rust").as_str();
+```
+
+### String + &str -> String
+`String` 后接多个 `&str`
+```rust
+let mut strs = "Hello".to_string();
+// let mut strs = String::from("Hello");
+strs.push_str(" Rust");  // " Rust" 是 &str 类型
+println!("{}", strs);
+```
+
 # 参考
 [String vs &str in Rust](https://blog.thoughtram.io/string-vs-str-in-rust/)
+[【翻译】 Rust中的String和&str](https://zhuanlan.zhihu.com/p/123278299)
