@@ -70,7 +70,7 @@ my_name.push_str( " Precht");
 let last_name = &my_name[7..];
 ```
 通过指定 从 my_name 的第7个字节一直到缓存区的末尾("..")，last_name 是一个引用自 my_name 所拥有的字符串的字符串切片，即 last_name 借用了 my_name，内存中布局类似如下：
-```
+```rust
             my_name: String   last_name: &str
             [––––––––––––]    [–––––––]
             +–––+––––+––––+–––+–––+–––+
@@ -96,7 +96,7 @@ let my_name = "Pascal Precht"; // This is a `&str` not a `String`
 这里有一个问题是，如果 &str 是一个引用了被（某人）拥有的 String 的切片，那么这个 String 的所有者是谁？
 字符串字面量有点特殊，它们是引用自预分配文本（preallocated text）的字符串切片，这个预分配文本存储在可执行程序的只读内存中。它是装载我们程序的内存并不依赖于堆上分配的缓存区。
 也就是说，栈上有一个入口指向程序运行时预分配的内存。
-```
+```rust
             my_name: &str
             [–––––––––––]
             +–––+–––+
@@ -184,5 +184,5 @@ println!("{}", strs);
 ```
 
 # 参考
-[String vs &str in Rust](https://blog.thoughtram.io/string-vs-str-in-rust/)
+[String vs &str in Rust](https://blog.thoughtram.io/string-vs-str-in-rust/)  
 [【翻译】 Rust中的String和&str](https://zhuanlan.zhihu.com/p/123278299)

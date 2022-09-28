@@ -1,4 +1,11 @@
-先看一段程序，这段程序有 7 个 bug，我们逐个分析一下。
+我们编写的程序不可避免地要与内存打交道，关于内存我们要注意两方面的问题：
+一 指针要指向有效的内存区域，有效的内存区域是指已分配的并具有正确的类型/大小。如果指向的内存无效，则程序可能会崩溃。
+二 内存不会发生泄露。如果分配了一段内存，那么最后一定要被释放。发生内存泄露最终可能耗尽内存。
+
+对于不带 GC 的语言，即像 C/C++ 或者 Rust 这样的底层系统语言，上述问题要么由编译器通过静态分析（C++ RAII，Rust 借用检查器）来保证，要么由程序员来仔细地管理（malloc/free, new/delete）。C语言提供了很少的机制来保护程序免受手动内存管理的危险。
+
+下面通过一个中等复杂的示例来理解在C语言中处理内存时可能出现的问题，并了解现代静态分析工具如何防止此类错误。
+本文提供了一个用c编写的专门存储整数的 vector（可调整大小的数组）的实现，它包含至少7个与内存安全的错误，然后我们将它与等价的Rust实现进行比较。
 ```c
 #include <stdio.h>
 #include <stdlib.h>
@@ -108,8 +115,8 @@ impl Vec2 {
 
 fn main () {}
 ```
-如果仿照 C 代码来写 rust，将会编译失败。
-```
+如果仿照C代码来写 rust，将会编译失败。
+```markdown
 error[E0106]: missing lifetime specifier
  --> src/main.rs:8:17
   |
@@ -127,7 +134,7 @@ For more information about this error, try `rustc --explain E0106`.
 
 Rust 可以识别悬垂指针问题，甚至不需要查看函数实现而只需分析函数签名。
 上面的错误信息提示：函数的返回了借用的值，但没有值可借用，需要使用 'static 静态生命周期申明。
-修复代码，修改函数签名，返回拥有所有权的 vector。
+修复代码：修改函数签名，返回拥有所有权的 vector。
 ```rust
 impl Vec2 {
     fn new() -> Vec2 {
@@ -141,8 +148,8 @@ impl Vec2 {
 }
 ```
 需要注意的是，容量问题不会被编译器捕捉到，它是一个逻辑错误，由程序员来识别。
-也就是说，如果我们不修复这个bug，那么错误至少会是一个显式的越界数组错误，而不是访问越界内存的段错误。
-接下来，我们实现push方法:
+也就是说，如果我们不修复这个 bug，那么错误至少会是一个显式的越界数组错误，而不是访问越界内存的段错误。
+接下来，我们实现 push 方法:
 ```rust
 fn push(&mut self, n: isize) {
     if self.length == self.capacity {
@@ -177,5 +184,99 @@ fn push(&mut self, n: isize) {
 struct Point { x: f32, y: f32 }
 let p: Box<Point> = Box::new(Point{ x: 0.1, y: 0.2 });
 ```
-Rust 决定 Point 的大小，在后台执行 malloc(sizeof(Point))。
+Rust 决定 Point 的大小，它会在后台执行 malloc(sizeof(Point))。
+tips：在 rust 中分配可变大小数组的规范方法是使用 Vec。
 
+在这里，我们使用不稳定的 hadp 调用内存分配器，它为我们提供了一个指向已分配数据的原始指针 ptr。
+Rust 中的原始指针是不受 Rust 编译器管理的内存区域，这意味着 rust 不能确保此类指针的内存安全(防止无效访问)。
+然而，rust 提供了获得原始指针所有权的能力，我们使用 `slice::from_raw_parts_mut` 和 `Box::from_raw` 来实现这一点，`Box::from_raw` 告诉 rust 将内存指针视为堆分配数组。
+在转移所有权之后，假设内存是有效的并且具有正确的大小/类型，rust 将应用其通常的内存安全检查。
+
+tips：为了执行这些操作，我们必须显式地将代码标记为不安全的。因为如果我们的 rust 程序由于不安全代码的不正确实现而出现段错误，那么只查看相关的不安全代码而不是排查可能跨越整个代码库的错误就会更容易进行调试。
+
+我们不需要实现 vec_free 函数，因为 rust 自动为复合数据结构生成适当的析构函数，即当 Vec2 结构被释放时，rust 知道首先释放 Box<Vec[]>，然后释放 Vec，避免错误的 free 顺序或者 free 两次。最后，如果我们编写 main 函数:
+```rust
+fn main() {
+    let mut vec: Vec2 = Vec2::new();
+    vec.push(107);
+
+    let n: &isize = &vec.data[0];
+    vec.push(110);
+    println!("{}", n);
+}
+```
+编译上面的代码将会出现下面的错误：
+```markdown
+error[E0502]: cannot borrow `vec` as mutable because `vec.data[..]` is also borrowed as immutable
+  --> v.rs:50:5
+   |
+49 |     let n: &isize = &vec.data[0];
+   |                      ----------- immutable borrow occurs here
+50 |     vec.push(110);
+   |     ^^^ mutable borrow occurs here
+51 |     println!("{}", n);
+52 | }
+   | - immutable borrow ends here
+```
+即使是棘手的迭代器失效错误也会被编译器捕捉到，这是由于其关于借用和可变性的规则。
+获取指向 vector 元素的指针将不可变地借用整个 vector，而 push 则需要对 vector 进行可变访问，因此编译器会发现冲突并抛出错误。
+
+总之，rust 帮助我们修复了我们的C实现中与内存相关的每一个错误(除了容量问题，它至少会有更好的错误消息)。记住——这些都是保证，这意味着无论你的代码库有多大，rust 都是强制执行。因为如果我们能把这么多的内存错误加入到50行C语言中，大型代码库的将是一个噩梦。当然，这一切都是以与 rust 的借用检查器作斗争为代价的，包括最初的学习曲线以及围绕它的限制(参见:[Non-lexical lifetimes](http://smallcultfollowing.com/babysteps/blog/2016/04/27/non-lexical-lifetimes-introduction/))进行工作，但对于一个足够大规模的代码库来说，这种痛苦很可能是值得的。
+
+
+附 rust 完整代码
+```rust
+#![feature(allocator_api)]
+
+use std::heap::{Heap, Layout, Alloc};
+use std::slice;
+
+struct Vec2 {
+    data: Box<[isize]>,
+    length: usize,
+    capacity: usize,
+}
+
+impl Vec2 {
+    fn new() -> Vec2 {
+        let v = Vec2 {
+            data: Box::new([0]),
+            length: 0,
+            capacity: 1,
+        };
+        return v;
+    }
+
+    fn push(&mut self, n: isize) {
+        if self.length == self.capacity {
+            let new_capacity = self.capacity * 2;
+            let mut new_data = unsafe {
+                let ptr = Heap::default()
+                    .alloc(Layout::array::<isize>(new_capacity).unwrap())
+                    .unwrap() as *mut isize;
+                Box::from_raw(slice::from_raw_parts_mut(ptr, new_capacity))
+            };
+
+            for i in 0..self.length {
+                new_data[i] = self.data[i];
+            }
+
+            self.data = new_data;
+            self.capacity = new_capacity;
+        }
+
+        self.data[self.length] = n;
+        self.length += 1;
+    }
+}
+
+fn main() {
+    let mut vec: Vec2 = Vec2::new();
+    vec.push(107);
+    vec.push(110);
+
+    let n: &isize = &vec.data[0];
+}
+```
+
+[Memory Safety in Rust: A Case Study with C](https://willcrichton.net/notes/rust-memory-safety/)
