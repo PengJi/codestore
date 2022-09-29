@@ -59,4 +59,5 @@ rustc --version
 生成文档（在浏览器中打开当前项目用到的库的文件）：`cargo doc --open`
 
 ## 参考
-[anonymousGiga/learn_rust](https://github.com/anonymousGiga/learn_rust)
+[anonymousGiga/learn_rust](https://github.com/anonymousGiga/learn_rust)  
+[The Rust Programming Language source code](https://nostarch.com/Rust2018)

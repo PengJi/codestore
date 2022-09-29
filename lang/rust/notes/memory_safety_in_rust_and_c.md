@@ -116,7 +116,7 @@ impl Vec2 {
 fn main () {}
 ```
 如果仿照C代码来写 rust，将会编译失败。
-```markdown
+```rust
 error[E0106]: missing lifetime specifier
  --> src/main.rs:8:17
   |
@@ -206,7 +206,7 @@ fn main() {
 }
 ```
 编译上面的代码将会出现下面的错误：
-```markdown
+```rust
 error[E0502]: cannot borrow `vec` as mutable because `vec.data[..]` is also borrowed as immutable
   --> v.rs:50:5
    |
