@@ -18,7 +18,7 @@
 use std::thread;
 use std::sync::mpsc;
 
-fn fake_main() {
+fn main() {
     let (tx, rx) = mpsc::channel();
 
     thread::spawn(move || {

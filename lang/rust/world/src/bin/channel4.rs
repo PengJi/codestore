@@ -6,7 +6,7 @@ use std::thread;
 use std::sync::mpsc;
 use std::time::Duration;
 
-fn fake_main() {
+fn main() {
     let (tx, rs) = mpsc::channel();
     let tx1 = mpsc::Sender::clone(&tx);
     let tx2 = mpsc::Sender::clone(&tx);
