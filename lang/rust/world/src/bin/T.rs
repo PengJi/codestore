@@ -116,7 +116,7 @@ impl<T, U> Point2<T, U> {
     }
 }
 
-fn fake_main() {
+fn main() {
     let p = Point{ x: 1, y: 2 };
     println!("x = {}", p.get_x());
     println!("y = {}", p.get_y());

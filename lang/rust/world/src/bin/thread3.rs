@@ -7,7 +7,7 @@
 
 use std::sync::Mutex;
 
-fn fake_main() {
+fn main() {
     // Mutex<T> 是一个只能指针，lock 调用返回一个 MutexGuard 的智能指针
     // 内部提供了 drop 方法，当 MutexGuard 离开作用域时自动释放锁
     let m = Mutex::new(0);

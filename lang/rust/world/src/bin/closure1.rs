@@ -7,7 +7,7 @@ fn add_one_v1(x: u32) -> u32 {
     x + 1
 }
 
-fn fake_main() {
+fn main() {
     let use_closure = || {
         println!("This is a closure");
     }

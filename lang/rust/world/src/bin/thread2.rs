@@ -2,7 +2,7 @@
 
 use std::thread;
 
-fn fake_main() {
+fn main() {
     let v = vec![1, 2, 3];
 
     // 会出错，因为无法保证拥有 v 的所有权

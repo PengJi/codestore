@@ -13,7 +13,7 @@ impl Drop for Dog {
 }
 
 //rust提供了std::mem::drop()
-fn fake_main() {
+fn main() {
     let a = Dog{name: String::from("dog1")};
     {
         let b = Dog{name: String::from("dog2")};

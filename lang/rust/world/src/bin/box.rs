@@ -22,7 +22,7 @@ enum List {
 }
 
 
-fn fake_main() {
+fn main() {
     let b = Box::new(5);  // b 存储于栈上，5 存储在堆上，b 指向 5 所在的内存
     println!("b = {}", b);
 

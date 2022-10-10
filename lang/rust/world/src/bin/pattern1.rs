@@ -21,7 +21,7 @@ fn fake_main() {
 }
 
 // if let
-fn fake_main1() {
+fn main1() {
     let color: Option<&str> = None,
     let is_ok = true;
     let age: Result<u8, _> = "33".parse();

@@ -8,7 +8,7 @@
 //     fn netxt(&mut self) -> Option<Self::Item>;  // type Item 和 Self::Item 这种用法叫做定义 trait 的关联类型
 // }
 
-fn fake_main() {
+fn main() {
     let v1 = vec![1, 2, 3];
     let mut v1_iter = v1.iter();
     for val in v1_iter {

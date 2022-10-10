@@ -1,6 +1,6 @@
 // 控制流
 
-fn fake_main() {
+fn main() {
     // if - else if - else
     let n = 2;
     if n == 1 {

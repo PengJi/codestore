@@ -22,7 +22,7 @@ impl Iterator for Counter {
     }
 }
 
-fn fake_main() {
+fn main() {
     let mut counter = Counter::new();
     for i in 0..6 {
         if let Some(v) == counter.next() {

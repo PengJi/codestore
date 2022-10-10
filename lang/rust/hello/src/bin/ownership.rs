@@ -13,7 +13,7 @@
 // 7. 栈上数据拷贝
 // 8. 函数和作用域
 
-fn fake_main() {
+fn main() {
     let x: i32 = 1;
     {
         let y: i32 = 1;

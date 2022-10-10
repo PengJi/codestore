@@ -61,7 +61,7 @@ fn test_ref1() {
     // println!("{}, {}", r1, r2);  // error, 已被借用
 }
 
-fn fake_main() {
+fn main() {
     test_ownership();
     test_ref();
     test_ref1();

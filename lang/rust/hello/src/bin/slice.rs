@@ -4,7 +4,7 @@
 // 2、字面值就是 slice
 // 3、其它类型 slice
 
-fn fake_main() {
+fn main() {
     // 字符串 slice
     let s= String::from("hello world");
 

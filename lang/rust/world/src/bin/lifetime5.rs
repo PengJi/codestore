@@ -14,7 +14,7 @@ fn function<'a, T: Display>(x: &'a str, y: &'a str, ann: T) -> &'a str {
     }
 }
 
-fn fake_main() {
+fn main() {
     let s1 = String::from("s1");
     let s2 = String::from("s2");
     let ann = 30;

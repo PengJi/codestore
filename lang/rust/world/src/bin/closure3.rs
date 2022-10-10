@@ -13,7 +13,7 @@
 // 没有移动被捕获变量的所有权到闭包的闭包也实现了 FnMut。
 // 不需要对捕获的变量进行可变访问的闭包实现了 Fn。
 
-fn fake_main() {
+fn main() {
     // let x = 3;
     // let equal_to_x = |n| {n == x};
     // ley y = 3;

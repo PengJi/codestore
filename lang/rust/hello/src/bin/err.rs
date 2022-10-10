@@ -75,7 +75,7 @@ fn test_err2() {
 
 }
 
-fn fake_main() {
+fn main() {
     test_err1();
     test_err2();
 }

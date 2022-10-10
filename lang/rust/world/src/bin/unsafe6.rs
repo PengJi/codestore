@@ -1,23 +1,20 @@
-// 访问或者修改可变静态变量
-// 静态变量和常量的区别：
-// 1. 静态变量有一个固定的内存地址（使用这个值总会访问相同的地址），常量则允许在任何被用到的时候复制其数据。
-// 2. 静态变量可以使可变的，尽管这可能是不安全的（用 unsafe 包含）
+// 实现不安全的 trait
+// (1) 当至少有一个方法中包含编译器不能验证的不变量时，该 trait 就是不安全的。
+// (2) 在 trait 之前增加 unsafe 声明其为不安全的，同时 trait 的实现也必须用 unsafe 标记。
 
-static HELLO_WORLD: &str = "hello, world";
+unsafe trait Foo {
+    fn foo(&self);
+}
 
-static mut COUNTER: u32 = 0;  // 可变的静态变量
-fn add_counter(inc: u32) {
-    unsafe {
-        COUNTER += inc;  // 不安全的代码
+struct Bar();
+
+unsafe impl Foo for Bar {
+    fn foo(&self) {
+        println!("foo");
     }
 }
 
 fn main() {
-    println!("{}", HELLO_WORLD);
-
-    add_counter(3);
-    add_counter(2);
-    unsafe {
-        println!("counter: {}", COUNTER);
-    }
+    let a = Bar();
+    a.foo();
 }

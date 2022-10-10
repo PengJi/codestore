@@ -63,7 +63,7 @@ fn print_information(item: impl GetInformation) {
     println!("age = {}", item.get_age());
 }
 
-fn fake_main() {
+fn main() {
     let s = Student{name: "xiaoming".to_string(), age: 10};
     let t = Teacher{name: "xiaohuang".to_string(), age: 30, subject: String:from("math")};
 

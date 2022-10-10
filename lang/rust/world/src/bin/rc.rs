@@ -9,7 +9,7 @@ enum List {
 use crate::List::{Cons, Nil};
 use std::rc::Rc;
 
-fn fake_main() {
+fn main() {
     let a = Rc::new(Cons(5, RC::new(Cons(10, Rc::new(Nil)))));
     println!("count after creating a = {}", Rc::strong_count(&a));
 

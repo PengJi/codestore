@@ -2,7 +2,7 @@
 
 use std::collections::HashMap;
 
-fn fake_main() {
+fn main() {
     // 1. HashMap<k, v>
     // 2. 创建 HashMap
     let mut scores: HashMap<String, i32> = HashMap::new();

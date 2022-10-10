@@ -15,7 +15,7 @@ fn foo() {
     }
 }
 
-fn fake_main() {
+fn main() {
     unsafe {
         dangerous();
     }

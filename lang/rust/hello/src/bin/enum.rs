@@ -52,7 +52,7 @@ impl Message {
     }
 }
 
-fn fake_main() {
+fn main() {
     // C 语言方式
     let i1 = IpAddr {
         kind: IpAddrKind::v4,

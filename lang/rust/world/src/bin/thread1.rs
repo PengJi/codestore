@@ -3,7 +3,7 @@
 use std::thread;
 use std::time::Duration;
 
-fn fake_main() {
+fn main() {
     let handle = thread::spawn(|| {
         for i in 1..10 {
             println!("num {} in spawn", i);

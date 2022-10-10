@@ -8,7 +8,7 @@
 // T 是一个泛型
 
 // 2. 使用方式
-fn fake_main() {
+fn main() {
     let some_number = Some(5);
     let some_string = Some(String::from("a string"));
     let absent_number: Option<i32> = None;

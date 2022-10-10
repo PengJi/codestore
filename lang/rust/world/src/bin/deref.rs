@@ -10,7 +10,7 @@
 //let b = &a;
 //let c = *b;//解引用
 
-fn fake_main() {
+fn main() {
     let x = 5;
     let y = &x;
     assert_eq!(5, x);

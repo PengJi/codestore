@@ -18,7 +18,7 @@ fn test_fun2(a: i32, b: i32) -> i32 {
     a + b
 }
 
-fn fake_main() {
+fn main() {
     test_fun();
 
     let a: i32 = 9;

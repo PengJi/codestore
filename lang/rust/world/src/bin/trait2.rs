@@ -85,7 +85,7 @@ impl GetAge for Teacher {
 //     }
 // }
 
-fn fake_main() {
+fn main() {
     let s = Student(name: "xiaoming".to_string(), age: 10);
     print_information(s);
 

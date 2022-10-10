@@ -8,7 +8,7 @@ fn  show(arr:[u32; 3]) {
     println!("---------------------");
 }
 
-fn fake_main() {
+fn main() {
     //char 在rust里面，char是32位的
     let a = 'a';
     println!("a = {}", a);

@@ -8,7 +8,7 @@ use std::thread;
 //use std::rc::Rc;
 use std::sync::Arc;
 
-fn fake_main() {
+fn main() {
     // let counter = Mutex::new(0);
     // let counter = Rc::new(Mutex::new(0));
     let counter = Arc::new(Mutex::new(0));

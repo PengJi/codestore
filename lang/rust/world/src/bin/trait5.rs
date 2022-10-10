@@ -27,7 +27,7 @@ impl GetName for Student {
     }
 }
 
-fn fake_main() {
+fn main() {
     let s = Student{name: String::from("xiaoming")};
     s.print_name();
 }

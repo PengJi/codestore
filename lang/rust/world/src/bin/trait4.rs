@@ -56,7 +56,7 @@ impl GetAge for Student {
     }
 }
 
-fn fake_main() {
+fn main() {
     let s = Student{name: "xiaoming".to_string(), age: 20};
     let t = Teacher{name: "xiaoming".to_string(), age: 30};
     let m = PeopleMatchInfo{master: t, student: s};

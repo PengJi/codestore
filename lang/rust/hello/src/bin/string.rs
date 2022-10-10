@@ -1,6 +1,6 @@
 // 字符串
 
-fn fake_main {
+fn main {
     // 1. 创建一个空 String
     let mut s0 = String::new();
     s0.push_str("hello");

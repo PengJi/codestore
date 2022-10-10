@@ -30,7 +30,7 @@ impl<T> Cacher<T>
     }
 }
 
-fn fake_main() {
+fn main() {
     let mut c = Cacher::new(|x| {x+1});  // 传入一个闭包，效果相当于一个回调
     let v1 = c.value(1);
     println!("v1 = {}", v1);

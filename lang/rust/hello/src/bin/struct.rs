@@ -106,7 +106,7 @@ fn test_impl() {
 }
 
 
-fn fake_main() {
+fn main() {
     test_struct();
     test_impl();
 }

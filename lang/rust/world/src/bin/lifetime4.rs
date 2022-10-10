@@ -22,7 +22,7 @@ impl<'b> StuA<'b> {
     }
 }
 
-fn fake_main() {
+fn main() {
     let s = String::from("hello");
     let a = StuA{name: &s};
     println!("{}", a.do_something);
