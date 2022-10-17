@@ -39,7 +39,7 @@ qemu 创建好了上述的设备之后，在虚拟机中执行 `qemu-ga --method
 # qemu-ga 原理
 qemug-ga 的架构如下：
 
-TODO
+![](./images/qemu-ga_qemu.jpg)
 
 qemu 创建一个 `virtserialport` 串口设备，该串口设备还有一个 `chardev` 设备，提供虚拟机与外部设备的连接、数据传输等，对应的后端为 `unix socket`，对应的文件是 `/tmp/qga.sock`，qemu 还会将该 socket 文件的 fd 加入事件监听的主循环中。
 
@@ -309,12 +309,12 @@ static void process_command(GAState *s, QDict *req)
     }
 }
 ```
-该函数调用 qmp_dispatch，它会在 QmpCommandList 链表中找到要调用的命令与函数来执行，并将结果返回，接着则调用 send_response 返回数据。
+该函数调用 qmp_dispatch，会在 QmpCommandList 链表中找到要调用的命令与函数来执行，并将结果返回，接着则调用 send_response 返回数据。
 
 # qemu-ga qemu 侧原理
-命令行 -device virtio-serial-pci 会创建 virtio-serial 对应的类型为 virtio-serial-pci 的 pci 代理设备，其实例初始化函数为 virtio_serial_pci_instance_init。
-hw/virtio/virtio-pci.c
+命令行 `-device virtio-serial-pci` 会创建 `virtio-serial` 对应的类型为 `virtio-serial-pci` 的 pci 代理设备，其实例初始化函数为 `virtio_serial_pci_instance_init`。
 ```c
+// hw/virtio/virtio-pci.c
 static void virtio_serial_pci_instance_init(Object *obj)
 {
    VirtIOSerialPCI *dev = VIRTIO_SERIAL_PCI(obj);
@@ -323,3 +323,4 @@ static void virtio_serial_pci_instance_init(Object *obj)
                                TYPE_VIRTIO_SERIAL);
 }
 ```
+该函数主要调用 `virtio_instance_init_common` 来创建一个 `virtio-serial-device` 设备。
