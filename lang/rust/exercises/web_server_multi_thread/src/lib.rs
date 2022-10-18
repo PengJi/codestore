@@ -1,7 +1,7 @@
-use std::thread;
 use std::sync::mpsc;
 use std::sync::Arc;
 use std::sync::Mutex;
+use std::thread;
 
 // 线程池（thread pool）是一组预先分配的等待或准备处理任务的线程。
 // 当程序收到一个新任务，线程池中的一个线程会被分配任务，这个线程会离开并处理任务。
@@ -57,10 +57,7 @@ impl ThreadPool {
             workers.push(Worker::new(id, Arc::clone(&receiver)));
         }
 
-        ThreadPool {
-            workers,
-            sender,
-        }
+        ThreadPool { workers, sender }
     }
 
     // 闭包参数
@@ -69,8 +66,8 @@ impl ThreadPool {
     // 使用 send 来将闭包从一个线程转移到另一个线程。
     // 使用 'static 是因为并不知道线程会执行多久。
     pub fn execute<F>(&self, f: F)
-        where
-            F: FnOnce() + Send + 'static
+    where
+        F: FnOnce() + Send + 'static,
     {
         let job = Box::new(f);
         // 将要执行的代码发送到通道，之后 worker 会从通道接收任务
@@ -83,7 +80,7 @@ impl ThreadPool {
 // 具体实现方式是在 ThreadPool 和线程之间引入一个新的数据类型，即 Wroker。
 // Wroker 负责在 ThreadPool 中将代码传递给线程
 struct Worker {
-    id: usize,  // worker id，区别不同的 worker。
+    id: usize, // worker id，区别不同的 worker。
     // 在 spawn 中，spwn 返回的是 JoinHandle<T>，用于存放线程，这里由于传入的闭包不返回任何值，所以 T 为()。
     thread: thread::JoinHandle<()>,
 }
@@ -95,16 +92,13 @@ impl Worker {
             loop {
                 // 从通道中获取需要执行的代码
                 let job = receiver.lock().unwrap().recv().unwrap();
-                
+
                 println!("Worker {} got a job; executing.", id);
 
                 job.call_box();
             }
         });
 
-        Worker {
-            id,
-            thread,
-        }
+        Worker { id, thread }
     }
 }

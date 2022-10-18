@@ -28,6 +28,9 @@ Intel VT-d 硬件辅助虚拟化
 ## 网络虚拟化
 操作系统虚拟专用网络设备  
 
+## tags
+**MMU**  **IOMMU**  **DMA(Direct Memory Access)**  **中断重映射(Interrupt Remapping)**  **virtio**  **vhost**  **vhost-user** 
+
 
 ## exercises
 [使用Rust实现vhost-user设备](https://github.com/oscomp/proj129-vhost-user-devices-in-rust)  
