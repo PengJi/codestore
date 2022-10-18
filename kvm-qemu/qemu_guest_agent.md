@@ -323,4 +323,86 @@ static void virtio_serial_pci_instance_init(Object *obj)
                                TYPE_VIRTIO_SERIAL);
 }
 ```
-该函数主要调用 `virtio_instance_init_common` 来创建一个 `virtio-serial-device` 设备。
+该函数主要调用 `virtio_instance_init_common` 来创建一个 `virtio-serial-device` 设备。  
+在 qemu 的 main 函数中，有如下步骤
+```c
+// vl.c
+/* init generic devices */
+rom_set_order_override(FW_CFG_ORDER_OVERRIDE_DEVICE);
+if (qemu_opts_foreach(qemu_find_opts("device"),
+                        device_init_func, NULL, NULL)) {
+    exit(1);
+}
+```
+其中 `device_init_func` 会将 `virtio-serical-pci` 设备具现化，调用的函数为 `virtio_serial_pci_realize`.
+```c
+// hw/virtio/virtio-pci.c
+static void virtio_serial_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+{
+    VirtIOSerialPCI *dev = VIRTIO_SERIAL_PCI(vpci_dev);
+    DeviceState *vdev = DEVICE(&dev->vdev);
+    DeviceState *proxy = DEVICE(vpci_dev);
+    char *bus_name;
+
+    ...
+
+    qdev_set_parent_bus(vdev, BUS(&vpci_dev->bus));
+    object_property_set_bool(OBJECT(vdev), true, "realized", errp);
+}
+```
+接着调用 `virtio_serial_device_realize` 具现化 `virtio-serial-device` 设备，其代码如下：
+```c
+// hw/char/virtio-serial-bus.c
+static void virtio_serial_device_realize(DeviceState *dev, Error **errp)
+{
+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+    VirtIOSerial *vser = VIRTIO_SERIAL(dev);
+    uint32_t i, max_supported_ports;
+    size_t config_size = sizeof(struct virtio_console_config);
+
+    ...
+
+    virtio_init(vdev, "virtio-serial", VIRTIO_ID_CONSOLE,
+                config_size);
+
+    /* Spawn a new virtio-serial bus on which the ports will ride as devices */
+    qbus_create_inplace(&vser->bus, sizeof(vser->bus), TYPE_VIRTIO_SERIAL_BUS,
+                        dev, vdev->bus_name);
+    qbus_set_hotplug_handler(BUS(&vser->bus), DEVICE(vser), errp);
+    vser->bus.vser = vser;
+    QTAILQ_INIT(&vser->ports);
+
+    vser->bus.max_nr_ports = vser->serial.max_virtserial_ports;
+    vser->ivqs = g_malloc(vser->serial.max_virtserial_ports
+                          * sizeof(VirtQueue *));
+    vser->ovqs = g_malloc(vser->serial.max_virtserial_ports
+                          * sizeof(VirtQueue *));
+
+    /* Add a queue for host to guest transfers for port 0 (backward compat) */
+    vser->ivqs[0] = virtio_add_queue(vdev, 128, handle_input);
+    /* Add a queue for guest to host transfers for port 0 (backward compat) */
+    vser->ovqs[0] = virtio_add_queue(vdev, 128, handle_output);
+    /* control queue: host to guest */
+    vser->c_ivq = virtio_add_queue(vdev, 32, control_in);
+    /* control queue: guest to host */
+    vser->c_ovq = virtio_add_queue(vdev, 32, control_out);
+
+    for (i = 1; i < vser->bus.max_nr_ports; i++) {
+        /* Add a per-port queue for host to guest transfers */
+        vser->ivqs[i] = virtio_add_queue(vdev, 128, handle_input);
+        /* Add a per-per queue for guest to host transfers */
+        vser->ovqs[i] = virtio_add_queue(vdev, 128, handle_output);
+    }
+
+    vser->ports_map = g_malloc0((DIV_ROUND_UP(vser->serial.max_virtserial_ports, 32))
+        * sizeof(vser->ports_map[0]));
+    
+    ...
+
+    QLIST_INSERT_HEAD(&vserdevices.devices, vser, next);
+}
+```
+上述代码中 `virtio_init` 初始化 `virtio-serial-device` 设备，调用 `qbus_create_inplace` 函数创建一条 virtio 串行总线，该总线上可以挂 virtio 串口设备，分配 virtio serial device 自己的 virtqueue（`vser->c_ivq` 和 `vser->c_ovq`） 来控制 virtioserialdevice 设备，分配并初始化 virtio 串口设备的 virtqueue（即 `vser->ivqs` 数组和 `vser->ovqs` 数组）来进行数据传输。  
+
+从虚拟机到宿主机的 virtqueue 的处理函数是 handle_output，从宿主机到虚拟机的 virtqueue 的处理函数是 handle_input，handle_input 只在特殊情况下调用，如虚拟机由于长时间不读取 virtio 串口的数据，导致宿主机不能写，当虚拟机读取了一部分数据之后，就会调用 handle_input 通知宿主机继续写。
+
