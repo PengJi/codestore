@@ -1,5 +1,5 @@
 ## 介绍
-Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助，2010年首次发布 0.1.0 版本，用于 Servo 引擎的研发，2015年5月15号 年 rust 发布 1.0 版本。2021年2⽉9号，Rust 基⾦会宣布成⽴，以致⼒于在全球范围内推⼴和发展 Rust 语⾔。
+Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助，2010 年首次发布 0.1.0 版本，用于 Servo 引擎的研发。2015年5月15号 年 Rust 发布 1.0 版本。2021年2⽉9号，Rust 基⾦会宣布成⽴，以致⼒于在全球范围内推⼴和发展 Rust 语⾔。
 * 2015-2018 工具、文档、编译器更加智能  
 * 2018-2021 异步生态完善  
 
@@ -16,27 +16,26 @@ Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助�
 2. 可靠性，Rust 保证了内存安全和线程安全，在编译时就能够避免大多数运行时可能发生的错误。
 3. 生产力，Rust 拥有出色的文档、强大的编译器和清晰的错误提示，还提供了方便的包管理工具和构建工具。
 
-### rust 基础
-通用编程概念  
-所有权  
-结构体  
-枚举与模式匹配  
-vector、string、hashmap  
-包、crate、模块  
-测试  
+## Rust 学习
 
-### rust 进阶
-错误处理  
-泛型  
-trait  
-生命周期  
-迭代器  
-闭包  
-只能指针  
-线程  
-面向对象  
-高级特征  
+### 基础
+**通用编程概念**  **所有权**  **结构体**  **枚举与模式匹配**
+**vector, string, hashmap**  **包，crate, 模块**
+**测试**
 
+### 进阶
+**错误处理**  **泛型**  **trait**  **生命周期**
+**迭代器**  **闭包**  **只能指针**  **线程**  **面向对象**
+**高级特征**
+
+### 学习路线
+1. [The Rust Programming Language](https://doc.rust-lang.org/book/)
+2. [Rust By Example](https://doc.rust-lang.org/rust-by-example/)
+3. [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)
+5. [The Rustonomicon](https://doc.rust-lang.org/nomicon/)
+6. 其他：网络编程、实现链表
+
+***
 
 ## 安装
 `curl https://sh.rustup.rs -sSf | sh`  
@@ -44,7 +43,7 @@ trait
 或手动添加环境变量  
 `export PATH="$HOME/.cargo/bin:$PATH"`  
 
-## 更新版本
+## 更新
 rustup update
 
 ## 卸载
@@ -63,6 +62,14 @@ rustc --version
 打印堆栈：`RUST_BACKTRACE=1 cargo run`  
 生成文档（在浏览器中打开当前项目用到的库的文件）：`cargo doc --open`
 
+***
+
 ## 参考
+[The Rust Programming Language](https://doc.rust-lang.org/book/)  
+[Rust By Example](https://doc.rust-lang.org/rust-by-example/)  
+[The Cargo Book](https://doc.rust-lang.org/cargo/guide/)
+[Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)    
+[The Rustonomicon](https://doc.rust-lang.org/nomicon/)  
+
+[The Rust Programming Language source code](https://nostarch.com/Rust2018)  
 [anonymousGiga/learn_rust](https://github.com/anonymousGiga/learn_rust)  
-[The Rust Programming Language source code](https://nostarch.com/Rust2018)

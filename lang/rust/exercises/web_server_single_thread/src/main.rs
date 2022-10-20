@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::prelude::*;
-use std::net::TcpStream;
 use std::net::TcpListener;
+use std::net::TcpStream;
 
 // 单线程 web server，一次只能处理一个请求
 
@@ -9,7 +9,7 @@ use std::net::TcpListener;
 // Method Request-URI HTTP-Version CRLF
 // headers CRLF
 // message-body
-// 
+//
 // http 的响应个数
 // HTTP-Version Status-Code Reason-Phrase CRLF
 // headers CRLF
@@ -30,7 +30,7 @@ fn main() {
 }
 
 fn handle_connection(mut stream: TcpStream) {
-    let mut buffer = [0; 512];  // 在栈上申请一个 512 字节的 buffer 来存放读取的内容，类型为字节数组
+    let mut buffer = [0; 512]; // 在栈上申请一个 512 字节的 buffer 来存放读取的内容，类型为字节数组
     stream.read(&mut buffer).unwrap();
 
     // 使用 b"" 转换为字节字符串"
