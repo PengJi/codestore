@@ -406,3 +406,106 @@ static void virtio_serial_device_realize(DeviceState *dev, Error **errp)
 
 从虚拟机到宿主机的 virtqueue 的处理函数是 handle_output，从宿主机到虚拟机的 virtqueue 的处理函数是 handle_input，handle_input 只在特殊情况下调用，如虚拟机由于长时间不读取 virtio 串口的数据，导致宿主机不能写，当虚拟机读取了一部分数据之后，就会调用 handle_input 通知宿主机继续写。
 
+***
+
+命令行 `-chardev socket,id=charchannel0,fd=51,server,nowait` 会创建一个后端为 `unix socket` 的 chardev 设备。chardev 设备的共同父类型为 `TYPE_CHARDEV`，各个子类型包括：TYPE_CHARDEV_SOCKET、TYPE_CHARDEV_PTY、 TYPE_CHARDEV_FD 等，每一种子类型使用不同的后端，虚拟机可以通过 chardev 
+
+在 qemu main 函数中会调用 `chardev_init_func` 对每一个 chardev 设备进行初始化。
+
+chardev_init_func 函数如下：
+```c
+// vl.c
+static int chardev_init_func(void *opaque, QemuOpts *opts, Error **errp)
+{
+    Error *local_err = NULL;
+
+    if (!qemu_chr_new_from_opts(opts, &local_err)) {
+        if (local_err) {
+            error_report_err(local_err);
+            return -1;
+        }
+        exit(0);
+    }
+    return 0;
+}
+```
+
+该函数调用 `qemu_chr_new_from_opts` 来创建一个指定的 chardev 设备。
+```c
+// chardev/char.c
+Chardev *qemu_chr_new_from_opts(QemuOpts *opts, Error **errp)
+{
+    const ChardevClass *cc;
+    Chardev *chr = NULL;
+    ChardevBackend *backend = NULL;
+    const char *name = chardev_alias_translate(qemu_opt_get(opts, "backend"));
+    const char *id = qemu_opts_id(opts);
+    char *bid = NULL;
+
+    backend = qemu_chr_parse_opts(opts, errp);
+    if (backend == NULL) {
+        return NULL;
+    }
+
+    cc = char_get_class(name, errp);
+    if (cc == NULL) {
+        goto out;
+    }
+
+    if (qemu_opt_get_bool(opts, "mux", 0)) {
+        bid = g_strdup_printf("%s-base", id);
+    }
+
+    chr = qemu_chardev_new(bid ? bid : id,
+                           object_class_get_name(OBJECT_CLASS(cc)),
+                           backend, errp);
+
+    if (chr == NULL) {
+        goto out;
+    }
+
+    if (bid) {
+        Chardev *mux;
+        qapi_free_ChardevBackend(backend);
+        backend = g_new0(ChardevBackend, 1);
+        backend->type = CHARDEV_BACKEND_KIND_MUX;
+        backend->u.mux.data = g_new0(ChardevMux, 1);
+        backend->u.mux.data->chardev = g_strdup(bid);
+        mux = qemu_chardev_new(id, TYPE_CHARDEV_MUX, backend, errp);
+        if (mux == NULL) {
+            object_unparent(OBJECT(chr));
+            chr = NULL;
+            goto out;
+        }
+        chr = mux;
+    }
+
+out:
+    qapi_free_ChardevBackend(backend);
+    g_free(bid);
+    return chr;
+}
+```
+
+***
+
+现在已经有了 virtio serial 总线和 chardev 设备，接下来参数 `-device virtserialport,bus=virtio-serial0.0,nr=1,chardev=charchannel0,id=channel0,name=org.qemu.guest_agent.0 ` 创建一个 virtio 串口设备（virtioserialport），其对应的 chardev 为刚刚创建的 charchannel0，名称为 `org.qemu.guest_agent.0`，该设备的初始化代码如下：
+```c
+static void virtserialport_class_init(ObjectClass *klass, void *data)
+{
+    DeviceClass *dc = DEVICE_CLASS(klass);
+    VirtIOSerialPortClass *k = VIRTIO_SERIAL_PORT_CLASS(klass);
+
+    k->realize = virtconsole_realize;
+    k->unrealize = virtconsole_unrealize;
+    k->have_data = flush_buf;
+    k->set_guest_connected = set_guest_connected;
+    k->enable_backend = virtconsole_enable_backend;
+    k->guest_writable = guest_writable;
+    dc->props = virtserialport_properties;
+}
+```
+
+***
+
+最后分析 qemu 与 virtioserialport 的收发数据。
