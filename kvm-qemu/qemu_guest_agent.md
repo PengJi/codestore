@@ -39,7 +39,7 @@ qemu 创建好了上述的设备之后，在虚拟机中执行 `qemu-ga --method
 # qemu-ga 原理
 qemug-ga 的架构如下：
 
-![](./images/qemu-ga_qemu.jpg)
+![](./images/qemu-ga.jpg)
 
 qemu 创建一个 `virtserialport` 串口设备，该串口设备还有一个 `chardev` 设备，提供虚拟机与外部设备的连接、数据传输等，对应的后端为 `unix socket`，对应的文件是 `/tmp/qga.sock`，qemu 还会将该 socket 文件的 fd 加入事件监听的主循环中。
 
@@ -312,6 +312,9 @@ static void process_command(GAState *s, QDict *req)
 该函数调用 qmp_dispatch，会在 QmpCommandList 链表中找到要调用的命令与函数来执行，并将结果返回，接着则调用 send_response 返回数据。
 
 # qemu-ga qemu 侧原理
+在 qemu 侧会创建设备：`virtio-serial-pci`，`virtio-serial-device`，`virtio-serial-port`，`virtserialport`，这些设备的关系如下：
+![](./images/qemu-ga-device.jpg)
+
 命令行 `-device virtio-serial-pci` 会创建 `virtio-serial` 对应的类型为 `virtio-serial-pci` 的 pci 代理设备，其实例初始化函数为 `virtio_serial_pci_instance_init`。
 ```c
 // hw/virtio/virtio-pci.c
@@ -486,11 +489,14 @@ out:
     return chr;
 }
 ```
+上述函数首先从参数中得到 ChardevBackend 的 name，这里是 socket。接着从 backends 链表上找到对应 socket 的 CharDriver，然后分配 ChardevBackend 的空间，设置 ChardevBackend 的 type，调用 socket 后端的 parse 函数，parse 函数初始化 ChardevBackend 的相关数据，每种 ChardevBackend 的数据都不一样。对于 socket 来说，这里的 parse 回调函数是 `qemu_chr_parse_socket`，该函数会初始化相关分配并初始化一个 ChardevSocket 结构体，如这里提供的 socket 是一个 unix socket，会将 ChardevSocket 的 type 设置为 `SOCKET_ADDRESS_LEGACY_KIND_UNIX` 并保存该 unix socket 的路径。
+在后面的流程中，将会调用 `qmp_chardev_open_socket` 初始化 Chardev 和 ChardevBackend。
 
 ***
 
-现在已经有了 virtio serial 总线和 chardev 设备，接下来参数 `-device virtserialport,bus=virtio-serial0.0,nr=1,chardev=charchannel0,id=channel0,name=org.qemu.guest_agent.0 ` 创建一个 virtio 串口设备（virtioserialport），其对应的 chardev 为刚刚创建的 charchannel0，名称为 `org.qemu.guest_agent.0`，该设备的初始化代码如下：
+现在已经有了 virtio serial 总线和 chardev 设备，接下来参数 `-device virtserialport,bus=virtio-serial0.0,nr=1,chardev=charchannel0,id=channel0,name=org.qemu.guest_agent.0 ` 创建一个 virtio 串口设备（virtserialport），其对应的 chardev 为刚刚创建的 charchannel0，名称为 `org.qemu.guest_agent.0`，该设备的初始化代码如下：
 ```c
+// hw/char/virtio-console.c
 static void virtserialport_class_init(ObjectClass *klass, void *data)
 {
     DeviceClass *dc = DEVICE_CLASS(klass);
@@ -498,14 +504,245 @@ static void virtserialport_class_init(ObjectClass *klass, void *data)
 
     k->realize = virtconsole_realize;
     k->unrealize = virtconsole_unrealize;
-    k->have_data = flush_buf;
+    k->have_data = flush_buf;  // 向 socket 发送数据
     k->set_guest_connected = set_guest_connected;
     k->enable_backend = virtconsole_enable_backend;
     k->guest_writable = guest_writable;
     dc->props = virtserialport_properties;
+}
+
+static Property virtserialport_properties[] = {
+    DEFINE_PROP_CHR("chardev", VirtConsole, chr),
+    DEFINE_PROP_END_OF_LIST(),
+};
+```
+该类设备都会有一个 `virtserialport_properties` 属性，其对应设备对象为 chr 的 CharBackend 成员，在设备初始化的时候会初始化该属性。调用 chardev 属性的设置函数 `set_chr`：
+```c
+// hw/core/qdev-properties-system.c
+static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
+                    Error **errp)
+{
+    DeviceState *dev = DEVICE(obj);
+    Error *local_err = NULL;
+    Property *prop = opaque;
+    CharBackend *be = qdev_get_prop_ptr(dev, prop);
+    Chardev *s;
+    char *str;
+
+    ...
+
+    s = qemu_chr_find(str);
+    if (s == NULL) {
+        error_setg(errp, "Property '%s.%s' can't find value '%s'",
+                   object_get_typename(obj), prop->name, str);
+    } else if (!qemu_chr_fe_init(be, s, errp)) {
+        error_prepend(errp, "Property '%s.%s' can't take value '%s': ",
+                      object_get_typename(obj), prop->name, str);
+    }
+    g_free(str);
+}
+```
+`set_chr` 首先调用 `qemu_chr_find` 在 chardevs 链表上找到 chardev 设备，在之前的初始化中已经吧 qga0 加在了链表上。接着调用 `qemu_chr_fe_init` 对 virtio serial port 的 CharBackend 成员进行初始化。
+```c
+// chardev/char-fe.c
+bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
+{
+    int tag = 0;
+
+    if (s) {
+        if (CHARDEV_IS_MUX(s)) {
+            MuxChardev *d = MUX_CHARDEV(s);
+
+            if (d->mux_cnt >= MAX_MUX) {
+                goto unavailable;
+            }
+
+            d->backends[d->mux_cnt] = b;
+            tag = d->mux_cnt++;
+        } else if (s->be) {
+            goto unavailable;
+        } else {
+            s->be = b;
+        }
+    }
+
+    b->fe_open = false;
+    b->tag = tag;
+    b->chr = s;
+    return true;
+
+unavailable:
+    error_setg(errp, QERR_DEVICE_IN_USE, s->label);
+    return false;
+}
+```
+`qemu_chr_fe_init` 函数将 CharBackend 和 Chardev 关联起来，并初始 CharBackend 其他成员，相关数据结构的关系如下：
+![](./images/virtio-serial.jpg)
+
+接下来看 virtserialport 设备具现化，该设备有一个父设备 `virtio-serial-port`，它是一个抽象设备。首先调用它的局限换函数 `virtser_port_device_realize`，
+```c
+// hw/char/virtio-serial-bus.c
+static void virtser_port_device_realize(DeviceState *dev, Error **errp)
+{
+    VirtIOSerialPort *port = VIRTIO_SERIAL_PORT(dev);
+    VirtIOSerialPortClass *vsc = VIRTIO_SERIAL_PORT_GET_CLASS(port);
+    VirtIOSerialBus *bus = VIRTIO_SERIAL_BUS(qdev_get_parent_bus(dev));
+    int max_nr_ports;
+    bool plugging_port0;
+    Error *err = NULL;
+
+    port->vser = bus->vser;
+    port->bh = qemu_bh_new(flush_queued_data_bh, port);
+
+    assert(vsc->have_data);
+
+    /*
+     * Is the first console port we're seeing? If so, put it up at
+     * location 0. This is done for backward compatibility (old
+     * kernel, new qemu).
+     */
+    plugging_port0 = vsc->is_console && !find_port_by_id(port->vser, 0);
+
+    if (find_port_by_id(port->vser, port->id)) {
+        error_setg(errp, "virtio-serial-bus: A port already exists at id %u",
+                   port->id);
+        return;
+    }
+
+    if (port->id == VIRTIO_CONSOLE_BAD_ID) {
+        if (plugging_port0) {
+            port->id = 0;
+        } else {
+            port->id = find_free_port_id(port->vser);
+            if (port->id == VIRTIO_CONSOLE_BAD_ID) {
+                error_setg(errp, "virtio-serial-bus: Maximum port limit for "
+                                 "this device reached");
+                return;
+            }
+        }
+    }
+
+    ...
+
+    vsc->realize(dev, &err);  // 回调函数 virtconsole_realize
+    if (err != NULL) {
+        error_propagate(errp, err);
+        return;
+    }
+
+    port->elem = NULL;
+}
+```
+上述函数会为该 port 设备找到其在 virtio serial 总线的 id。接着调用 virtserialport 设备的具现化函数 `virtconsole_realize`，
+```c
+// hw/char/virtio-console.c
+static void virtconsole_realize(DeviceState *dev, Error **errp)
+{
+    VirtIOSerialPort *port = VIRTIO_SERIAL_PORT(dev);
+    VirtConsole *vcon = VIRTIO_CONSOLE(dev);
+    VirtIOSerialPortClass *k = VIRTIO_SERIAL_PORT_GET_CLASS(dev);
+
+    if (port->id == 0 && !k->is_console) {
+        error_setg(errp, "Port number 0 on virtio-serial devices reserved "
+                   "for virtconsole devices for backward compatibility.");
+        return;
+    }
+
+    if (qemu_chr_fe_backend_connected(&vcon->chr)) {
+        /*
+         * For consoles we don't block guest data transfer just
+         * because nothing is connected - we'll just let it go
+         * whetherever the chardev wants - /dev/null probably.
+         *
+         * For serial ports we need 100% reliable data transfer
+         * so we use the opened/closed signals from chardev to
+         * trigger open/close of the device
+         */
+        if (k->is_console) {
+            qemu_chr_fe_set_handlers(&vcon->chr, chr_can_read, chr_read,
+                                     NULL, chr_be_change,
+                                     vcon, NULL, true);
+            virtio_serial_open(port);
+        } else {
+            qemu_chr_fe_set_handlers(&vcon->chr, chr_can_read, chr_read,
+                                     chr_event, chr_be_change,
+                                     vcon, NULL, false);
+        }
+    }
+}
+```
+上述函数用于为其 Charbackend 设置各种回调函数，如 `chr_can_read` 表述允许读取该 chardev 上的数据，`chr_read` 表示读取 chardev 上的数据。chardev 数据来源有很多，这里主要是指用户通过连接该 chardev 对应的 unix socket 文件，然后向该文件发送的数据。
+
+virtio-serial-device 有一个 plug 回调函数 virtset_port_device_plug，当有设备插入到该设备对应的总线上时会调用该 plug 函数。设置 virtserialport 具现化的最后一个环节还要调用 plug 函数将该设备插入到 virtioserial 的 ports 链表上，并且将 port 设备对应的两个 virtqueue 设置为 virtio serial 设备响应的端口的队列。
+```c
+// hw/char/virtio-serial-bus.c
+static void virtser_port_device_plug(HotplugHandler *hotplug_dev,
+                                     DeviceState *dev, Error **errp)
+{
+    VirtIOSerialPort *port = VIRTIO_SERIAL_PORT(dev);
+
+    QTAILQ_INSERT_TAIL(&port->vser->ports, port, next);
+    port->ivq = port->vser->ivqs[port->id];
+    port->ovq = port->vser->ovqs[port->id];
+
+    add_port(port->vser, port->id);
+
+    /* Send an update to the guest about this new port added */
+    virtio_notify_config(VIRTIO_DEVICE(hotplug_dev));
 }
 ```
 
 ***
 
 最后分析 qemu 与 virtioserialport 的收发数据。
+首先看一下从虚拟机内部发送数据到 qemu 的过程。当虚拟机中写 virtio 串口设备时，最终会调用到 qemu 中 `virtio serialdevice` 为其上的端口创建的 VirtQueue 的 handle_optput 处理函数。
+```c
+// hw/char/virtio-serial-bus.c
+
+/* Guest wrote something to some port. */
+static void handle_output(VirtIODevice *vdev, VirtQueue *vq)
+{
+    VirtIOSerial *vser;
+    VirtIOSerialPort *port;
+
+    vser = VIRTIO_SERIAL(vdev);
+    port = find_port_by_vq(vser, vq);
+
+    if (!port || !port->host_connected) {
+        discard_vq_data(vq, vdev);
+        return;
+    }
+
+    if (!port->throttled) {
+        do_flush_queued_data(port, vq, vdev);
+        return;
+    }
+}
+``` 
+在上述函数中，首先通过 `find_port_by_vq` 查找该 Virtual 对应的 virtio 串口设备，然后调用 `do_flush_queued_data`，会从 vring 中取出数据并调用 VirtIOSerialPortClass 中的 have_data 回调，也就是 flush_buf 函数，该函数最终将数据发送到与 unix socket 文件 `/tmp/qga.sock` 连接对应的客户端。
+
+接下来分析虚拟机接收数据。当客户端向 unix socket 文件 `/tmp/qga.sock` 写数据时，会导致 qemu 主线程的 poll 返回，并调用 chr_read 函数。
+```c
+// hw/char/virtio-console.c
+/* Send data from a char device over to the guest */
+static void chr_read(void *opaque, const uint8_t *buf, int size)
+{
+    VirtConsole *vcon = opaque;
+    VirtIOSerialPort *port = VIRTIO_SERIAL_PORT(vcon);
+
+    trace_virtio_console_chr_read(port->id, size);
+    virtio_serial_write(port, buf, size);
+}
+
+// hw/char/virtio-serial-bus.c
+/* Individual ports/apps call this function to write to the guest. */
+ssize_t virtio_serial_write(VirtIOSerialPort *port, const uint8_t *buf,
+                            size_t size)
+{
+    if (!port || !port->host_connected || !port->guest_connected) {
+        return 0;
+    }
+    return write_to_port(port, buf, size);
+}
+```
+`chr_read` 函数通过包装函数 `virtio_serial_write` 调用最终的发送函数 `write_to_port`，在 `write_to_port` 中会填充接收 VirtQueue 的 vring，然后调用 `virtio_notify` 向 `virtio serial` 设备注入一个中断通知虚拟机读取数据。
