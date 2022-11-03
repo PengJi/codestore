@@ -33,7 +33,7 @@ Intel VT-d 硬件辅助虚拟化
 
 
 ```sh
-[root@jp-dev qemu-7.0.0]# make install
+# make install
 changing dir to build for make "install"...
 make[1]: Entering directory '/home/qemu-7.0.0/build'
 [1/20] Generating qemu-version.h with a custom command (wrapped by meson to capture output)

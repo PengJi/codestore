@@ -20,7 +20,7 @@
 `-monitor stdio` 在启动 qemu 之后，进入交互式命令行，可执行 hmp 命令
 `-chardev -mon`  通过 tcp 与 qemu 交互，可执行 qmp 命令
 
-若要添加 cdrom 驱动器和设备，可在命令行添加如下参数
+若要添加 `cdrom` 驱动器和设备，可在命令行添加如下参数
 ```sh
 -device virtio-scsi-pci,id=scsi0 \
 -drive id=cdrom0,if=none,format=raw,readonly=on,file=/usr/share/smartx/images/ae5d0ad2-ee8b-4be8-a5e9-dd55f8beee62 \
