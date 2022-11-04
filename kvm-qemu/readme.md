@@ -164,3 +164,7 @@ make[1]: Leaving directory '/home/qemu-7.0.0/build'
 [使用Rust实现vhost-user设备](https://github.com/oscomp/proj129-vhost-user-devices-in-rust)  
 [用Rust语言重写Linux kernel中的KVM](https://github.com/oscomp/proj178-kvm-in-rust)  
 [深入 virio-fs]()
+
+
+# refercens
+[CentOS Cloud images](http://cloud.centos.org/centos/7/images/)
