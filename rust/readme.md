@@ -35,6 +35,11 @@ Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助�
 5. [The Rustonomicon](https://doc.rust-lang.org/nomicon/)
 6. 其他：网络编程、实现链表
 
+### 自测
+1. async 原理；
+2. 手写链表；
+3. 智能指针区别；
+
 ***
 
 ## 安装
