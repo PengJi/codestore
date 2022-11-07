@@ -317,15 +317,15 @@ int main(int argc, char **argv)
     }  
   
     /* 私有文件映射将无法修改文件 */  
-    if ((mapped = (char *)mmap(NULL, sb.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0)) == (void *)-1) {  
-        perror("mmap");  
-    }  
+    if ((mapped = (char *)mmap(NULL, sb.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0)) == (void *)-1) {
+        perror("mmap");
+    }
   
-    /* 映射完后, 关闭文件也可以操纵内存 */  
-    close(fd);  
+    /* 映射完后, 关闭文件也可以操纵内存 */
+    close(fd);
   
-    /* 修改一个字符 */  
-    mapped[20] = '9';  
+    /* 修改一个字符 */
+    mapped[20] = '9';
    
     return 0;  
 }
@@ -361,6 +361,11 @@ int main(int argc, char** argv)
 
     return 0;
 }
+```
+输出：
+```
+child got a message: hi, this is father
+parent got a message: hi, dad, this is son
 ```
 
 《UNIX环境高级编程（第3版）》  

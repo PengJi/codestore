@@ -2,7 +2,7 @@
 
 // 迭代器负责遍历序列中的每一项和决定序列何时结束的逻辑。
 // 创建迭代器：迭代器是惰性的，在调用方法使用迭代器之前，不会有任何效果。
-// 每个迭代器都实现了 Iterator trait，Iterator trait 定义在标准库中：
+// 每个迭代器都实现了 Iterator trait，其定义在标准库中：
 // trait Iterator {
 //     type Item;
 //     fn netxt(&mut self) -> Option<Self::Item>;  // type Item 和 Self::Item 这种用法叫做定义 trait 的关联类型

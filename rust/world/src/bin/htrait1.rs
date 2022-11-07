@@ -1,7 +1,7 @@
 // 关联类型在 trait 定义中指定占位符类型
 // 关联类型是一个将类型占位符与 trait 相关联的方式。
 // trait 的实现着会针对特定的实现在这个类型的位置指定相应的具体类型。
-// 每个迭代器都实现了 Iterator trait，Iterator trait 定义在标准库中：
+// 每个迭代器都实现了 Iterator trait，其定义在标准库中：
 // trait Iterator {
 //     type Item;
 //     fn netxt(&mut self) -> Option<Self::Item>;  // type Item 和 Self::Item 这种用法叫做定义 trait 的关联类型
