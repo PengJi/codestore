@@ -18,27 +18,33 @@ Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助�
 
 ## Rust 学习
 
-### 基础
+### 基础知识点
 **通用编程概念**  **所有权**  **结构体**  **枚举与模式匹配**
 **vector, string, hashmap**  **包，crate, 模块**
 **测试**
 
-### 进阶
+### 进阶知识点
 **错误处理**  **泛型**  **trait**  **生命周期**
 **迭代器**  **闭包**  **只能指针**  **线程**  **面向对象**
 **高级特征**
 
-### 学习路线
-1. [The Rust Programming Language](https://doc.rust-lang.org/book/)
-2. [Rust By Example](https://doc.rust-lang.org/rust-by-example/)
-3. [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)
-5. [The Rustonomicon](https://doc.rust-lang.org/nomicon/)
-6. 其他：网络编程、实现链表
+### 资料
+[Rust 学习资料汇总](https://github.com/rcore-os/rCore/wiki/study-resource-of-system-programming-in-RUST)
+
+#### 书籍
+[The Rust Programming Language](https://doc.rust-lang.org/book/)  
+[Rust By Example](https://doc.rust-lang.org/rust-by-example/)  
+[Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)  
+[The Rustonomicon](https://doc.rust-lang.org/nomicon/)   
+
+#### 视频
+[Rust 过程宏开发实战](https://space.bilibili.com/500416539/channel/collectiondetail?sid=34404)  
 
 ### 自测
 1. async 原理；
 2. 手写链表；
 3. 智能指针区别；
+
 
 ***
 
