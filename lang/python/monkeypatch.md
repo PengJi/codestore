@@ -14,9 +14,14 @@ monkeypatch.setattr("svt.qga.QEMUGuestAgent.read_bytes", mock_read_bytes)
 def mock_allow_thaw(cls, vm_uuid):
     return False
 
+monkeypatch.setattr("SVTFileSystemWrapper.allow_thaw", mock_allow_thaw)
+# 或者
+def batch_get_svt_static_data_mock(self, uuid):
+    return []
 monkeypatch.setattr(
-            "agent.svt_file_system_wrapper.SVTFileSystemWrapper.allow_thaw", mock_allow_thaw
-        )
+    "SVTStaticDataWrapper.batch_get_svt_static_data",
+    classmethod(batch_get_svt_static_data_mock),
+)
 ```
 
 ### patch property
