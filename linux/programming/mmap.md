@@ -130,7 +130,7 @@ static int my_map(struct file *filp, struct vm_area_struct *vma)
         return -1;
  
     // 往该内存写10字节数据
-    for(i=0;i<10;i++)
+    for(i = 0; i < 10; i++)
         buffer[i] = array[i];
      
     return 0;
@@ -220,7 +220,7 @@ int main(int argc , char *argv[])
     }  
   
     //打印映射后的内存中的前10个字节内容  
-    for(i=0;i<10;i++)  
+    for(i = 0; i < 10; i++)  
         printf("%d\n",p_map[i]);  
 
 here:  

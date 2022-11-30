@@ -1,7 +1,5 @@
 系统调用
 
-mmap
-
 [yuzhidi/Understanding-UNIXLINUX-Programming](https://github.com/yuzhidi/Understanding-UNIXLINUX-Programming)  
 [acgtyrant/UULP](https://github.com/acgtyrant/UULP)  
 [ZCplayground/Understanding-Unix-Linux-Programming](https://github.com/ZCplayground/Understanding-Unix-Linux-Programming)  
