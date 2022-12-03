@@ -1,5 +1,5 @@
 [package]
-name = "hello"
+name = "knownledge_points"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,3 +8,9 @@ edition = "2021"
 [dependencies]
 mylib = {path = "./mylib"}
 rust-crypto = "0.2"
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3

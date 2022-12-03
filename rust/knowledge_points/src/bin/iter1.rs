@@ -38,7 +38,7 @@ fn main() {
     println!("v2 = {}", v2);
 
     // 消费适配器
-    let v1 = vec![1, ,2, 3];
+    let v1 = vec![1, 2, 3];
     let v1_iter = v1.iter();
     let total: i32 = v1_iter.sum(); // 利用消费适配器 sum 来求和
     println!("toall = {}", total);

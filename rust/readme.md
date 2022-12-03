@@ -28,23 +28,19 @@ Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助�
 **迭代器**  **闭包**  **只能指针**  **线程**  **面向对象**
 **高级特征**
 
-### 资料
 [Rust 学习资料汇总](https://github.com/rcore-os/rCore/wiki/study-resource-of-system-programming-in-RUST)
-
-#### 书籍
 [The Rust Programming Language](https://doc.rust-lang.org/book/)  
+[The Rust Programming Language source code](https://nostarch.com/Rust2018)   
 [Rust By Example](https://doc.rust-lang.org/rust-by-example/)  
 [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)  
 [The Rustonomicon](https://doc.rust-lang.org/nomicon/)   
-
-#### 视频
+[The Cargo Book](https://doc.rust-lang.org/cargo/guide/)  
 [Rust 过程宏开发实战](https://space.bilibili.com/500416539/channel/collectiondetail?sid=34404)  
 
-### 自测
+### 原理
 1. async 原理；
 2. 手写链表；
 3. 智能指针区别；
-
 
 ***
 
@@ -74,13 +70,3 @@ rustc --version
 生成文档（在浏览器中打开当前项目用到的库的文件）：`cargo doc --open`
 
 ***
-
-## 参考
-[The Rust Programming Language](https://doc.rust-lang.org/book/)  
-[Rust By Example](https://doc.rust-lang.org/rust-by-example/)  
-[The Cargo Book](https://doc.rust-lang.org/cargo/guide/)
-[Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)    
-[The Rustonomicon](https://doc.rust-lang.org/nomicon/)  
-
-[The Rust Programming Language source code](https://nostarch.com/Rust2018)  
-[anonymousGiga/learn_rust](https://github.com/anonymousGiga/learn_rust)  

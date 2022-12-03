@@ -10,7 +10,7 @@ fn main() {
 
     // 3. 丢弃 vector
     {
-        let v1 = vec![1, ,2, 3];
+        let v1 = vec![1, 2, 3];
     }
 
     // 4. 读取元素
@@ -53,7 +53,7 @@ fn main() {
         Context::Text(String::from("string")),
         Context::Int(-1),
         Context::Float(0.01), 
-    ]
+    ];
 
     // 注意事项
     let mut v = vec![1, 2, 3, 4, 5];
