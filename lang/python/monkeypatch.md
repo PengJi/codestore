@@ -15,13 +15,29 @@ def mock_allow_thaw(cls, vm_uuid):
     return False
 
 monkeypatch.setattr("SVTFileSystemWrapper.allow_thaw", mock_allow_thaw)
+
 # 或者
+
 def batch_get_svt_static_data_mock(self, uuid):
     return []
 monkeypatch.setattr(
     "SVTStaticDataWrapper.batch_get_svt_static_data",
     classmethod(batch_get_svt_static_data_mock),
 )
+```
+
+### patch class staticmethod
+```py
+@staticmethod
+def mock_allow_thaw(vm_uuid):
+    return False
+monkeypatch.setattr("SVTFileSystemWrapper.allow_thaw", mock_allow_thaw)
+
+# 或者
+
+def mock_allow_thaw(cls, vm_uuid):
+    return False
+monkeypatch.setattr("SVTFileSystemWrapper.allow_thaw", staticmethod(mock_allow_thaw))
 ```
 
 ### patch property
