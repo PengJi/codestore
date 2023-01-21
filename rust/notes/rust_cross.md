@@ -6,9 +6,9 @@
 `rustup show`
 
 toolchain 是交叉编译所需的"编译工具"，target 则是编译到目标平台所需的"库文件"。
-比如 Ubuntu 默认的 target 是 gnu 的，依赖 glibc，但是其他 Linux 系统未必是 glibc 是基础库，但是可以用同一套 toolchain（编译器之类的），因此只需要添加target 即可。
-而交叉编译到 Windows，则 Linux 的编译器是没有这个能力的，因此需要添加Windows平台的toolchain（有部分tool官方没有实现还得添加第三方的tool），然后再添加target。
-注意，如果Windows选择的是msvc而非gnu，那么哪怕是最简单的 hello world 也必须要安装 visual studio（主要是需要它携带的toolchain【linker等】）。
+比如 Ubuntu 默认的 target 是 gnu 的，依赖 glibc，但是其他 Linux 系统未必是 glibc 是基础库，但是可以用同一套 toolchain（编译器之类的），因此只需要添加 target 即可。
+而交叉编译到 Windows，则 Linux 的编译器是没有这个能力的，因此需要添加 Windows 平台的 toolchain（有部分tool官方没有实现还得添加第三方的tool），然后再添加 target。
+注意，如果 Windows 选择的是 msvc 而非 gnu，那么哪怕是最简单的 hello world 也必须要安装 visual studio（主要是需要它携带的toolchain【linker等】）。
 使用 ldd 命令可以查看程序依赖的动态库。
 
 `rustup target add x86_64-unknown-linux-musl`（可以加 --toolchain=stable，但是默认是stable，也可以安装nightly的）【可以用 `rustup show`查看安装了哪些工具链，可以看到 `stable-x86_64-unknown-linux-gnu` 是默认的工具链】
