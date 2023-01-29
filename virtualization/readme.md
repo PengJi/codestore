@@ -160,11 +160,13 @@ Running custom install script '/usr/bin/python3 /home/qemu-7.0.0/meson/meson.py 
 make[1]: Leaving directory '/home/qemu-7.0.0/build'
 ```
 
-## exercises
+## 练习
 [使用Rust实现vhost-user设备](https://github.com/oscomp/proj129-vhost-user-devices-in-rust)  
 [用Rust语言重写Linux kernel中的KVM](https://github.com/oscomp/proj178-kvm-in-rust)  
 [深入 virio-fs]()
 
 
-# refercens
-[CentOS Cloud images](http://cloud.centos.org/centos/7/images/)
+# 参考
+[CentOS Cloud images](http://cloud.centos.org/centos/7/images/)  
+
+[虚拟化技术发展编年史](https://zhuanlan.zhihu.com/p/27409164)
