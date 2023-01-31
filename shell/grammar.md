@@ -83,8 +83,9 @@ howdy!
 ```
 
 
-# 控制 shell 执行方式
-`set -e`  或 `set -o errexit`
+# [控制 shell 执行模式](https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html)
+* `set -e`  或 `set -o errexit`
+
 如果脚本中任意命令执行失败（具有非零的退出状态），则 bash 立即退出。  
 这种行为同编程语言类似，如：python、c 等，其中任何语句执行失败，则程序立即退出，不执行后续命令。  
 默认情况下，在执行脚本时若遇到错误命令，则 bash 会继续执行后面命令，整个脚本退出码是成功的，这种行为容易忽略错误。  
@@ -97,7 +98,8 @@ hello  # 立即退出
 echo "Hello"
 ```
 
-`set -u` 或 `set -o nounset`
+* `set -u` 或 `set -o nounset`
+
 执行脚本时，除了 $* 和 $@，遇到任何未定义的变量都会报错并立即退出。  
 这种行为同编程语言类似，如：python、c 等，变量必须先定义再引用。  
 符合 fail fast 设计理念。
@@ -109,7 +111,8 @@ set -u
 echo $hello  # 报错：hello: unbound variable
 ```
 
-`set -x`
+* `set -x`
+
 将所有执行的命令都打印到终端。  
 典型的用法：在执行脚本时，可以显示每个执行步骤。
 ```sh
@@ -130,7 +133,8 @@ fi
 # world
 ```
 
-`set -o pipefail`
+* `set -o pipefail`
+
 如果管道中任何命令失败，则失败命令的返回码将作为整个管道的返回码。  
 默认情况下，管道的最后一条命令是管道的返回码。
 ```sh

@@ -1,1 +1,0 @@
-Grammer and function example 
