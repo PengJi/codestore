@@ -1,20 +1,24 @@
 # 最佳实践
 1. 使用 `local` 在函数内定义局部变量，使用 `readonly` 定义全局变量；
+
 2. 使用$()代替\`(反单引号)；
    * $()能够支持内嵌；
    * $()不用转义；
+
    ```sh
    echo "A-`echo B-\`echo C-\\\`echo D\\\`\``"  # out: A-B-C-D
    echo "A-$(echo B-$(echo C-$(echo D)))"  # out: A-B-C-D
    ```
+
 3. 尽量使用 `[[]]` 来代替 `[]`；
    * 避免转义问题；
-   * 有不少新功能，包括但不限于：
-   （1）|| ：逻辑or
-   （2）&& ：逻辑and
-   （3）< ：字符串比较（不需要转义）
-   （4）== ：通配符(globbing)字符串比较
-   （5）=~ ：正则表达式(regular expression, RegEx)字符串比较
+   * 有不少新功能，包括但不限于：  
+   （1）|| ：逻辑or  
+   （2）&& ：逻辑and  
+   （3）< ：字符串比较（不需要转义）  
+   （4）== ：通配符(globbing)字符串比较  
+   （5）=~ ：正则表达式(regular expression, RegEx)字符串比较  
+
    ```sh
    [ "${name}" \> "a" -o "${name}" \< "z" ]
    [[ "${name}" > "a" && "${nmae}" < "z" ]]
@@ -29,10 +33,15 @@
    [[ "a bbb" =~ $var ]]
    # 如果表达式里含有空格，则必须存储到一个变量里，再进行通配符与正则比较。
    ```
+
 4. 简单的 `if` 尽量使用` && ||` 写成单行，比如 `[[ x > 2]] && echo x`；
+
 5. 利用 `/dev/null` 过滤不友好的输出信息；
+
 6. 利用命令的返回值判断命令的执行情况；
+
 7. 使用文件前要判断文件是否存在，否则做好异常处理；
+
 8. 使用封装提高代码的可读性；
    ```sh
    function ExtractComments {
@@ -40,9 +49,12 @@
    }
    cat test.sh | ExtractComments | wc
    ```
-9. 为防止变量中含有空格，对变量使用双引号，如："${var}"；
+
+9. 为防止变量中含有空格，对变量使用双引号，如：`"${var}"`；
+
 10. 使用 `mktemp` 生成临时文件或文件夹，
    参考：[mktemp 命令和 trap 命令教程](http://www.ruanyifeng.com/blog/2019/12/mktemp.html)；
+
 11. 会使用 `trap` 捕获信号，并在接受到终止信号时执行一些收尾工作，例如：`trap 'rm -f "$TMPFILE"' EXIT`，
    参考：[trap信号捕捉用法详解](https://www.junmajinlong.com/shell/script_course/shell_trap/)；
 
@@ -98,6 +110,16 @@ hello  # 立即退出
 echo "Hello"
 ```
 
+使用 set +e 可以暂时关闭。
+```sh
+set +e
+$(ls foobar)
+set -e
+```
+还有一种方式能达到类似目的
+`command || true`
+即使执行失败，脚本也不会退出。
+
 * `set -u` 或 `set -o nounset`
 
 执行脚本时，除了 $* 和 $@，遇到任何未定义的变量都会报错并立即退出。  
@@ -109,6 +131,24 @@ echo $test  # 输出空
 
 set -u
 echo $hello  # 报错：hello: unbound variable
+```
+
+* `set -o pipefail`
+
+该命令使如果管道中任何命令失败，则失败命令的返回码将作为整个管道的返回码。  
+默认情况下，管道的最后一条命令是管道的返回码。
+
+```sh
+#!/usr/bin/env bash
+grep some-string /non/exist/file | sort
+echo $?
+# grep 的错误码为 2，错误信息写入 stderr，stdout 为空，则 sort 的输入为空，可正确执行，整条命令管道的返回码为 0。
+
+set -o pipefail
+
+grep some-string /non/exist/file | sort
+echo $?
+# 整条命令管道的返回码为 2。
 ```
 
 * `set -x`
@@ -131,23 +171,6 @@ fi
 # + [[ -f /dev/sr0 ]]
 # + echo world
 # world
-```
-
-* `set -o pipefail`
-
-如果管道中任何命令失败，则失败命令的返回码将作为整个管道的返回码。  
-默认情况下，管道的最后一条命令是管道的返回码。
-```sh
-#!/usr/bin/env bash
-grep some-string /non/exist/file | sort
-echo $?
-# grep 的错误码为 2，错误信息写入 stderr，stdout 为空，则 sort 的输入为空，可正确执行，整条命令管道的返回码为 0。
-
-set -o pipefail
-
-grep some-string /non/exist/file | sort
-echo $?
-# 整条命令管道的返回码为 2。
 ```
 
 
