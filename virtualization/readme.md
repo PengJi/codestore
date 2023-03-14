@@ -167,6 +167,7 @@ make[1]: Leaving directory '/home/qemu-7.0.0/build'
 
 
 # 参考
+[虚拟化技术发展编年史](https://zhuanlan.zhihu.com/p/27409164)  
 [CentOS Cloud images](http://cloud.centos.org/centos/7/images/)  
-
-[虚拟化技术发展编年史](https://zhuanlan.zhihu.com/p/27409164)
+[​[qemu][http]qemu的网络类型disk技术分析](https://cloud.tencent.com/developer/article/1087508)  
+[[linux][storage]Linux存储栈](https://cloud.tencent.com/developer/article/1087520)  

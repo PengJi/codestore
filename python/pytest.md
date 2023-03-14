@@ -45,6 +45,7 @@ Fixture（固件）是一些函数，pytest 会在执行函数之前或者之后
 * ids：每个字符串id的列表，每个字符串对应于params这样他们就是测试ID的一部分。如果没有提供ID它们将从params自动生成。
 * name：fixture的名称。这默认为装饰函数的名称。
 
+[pytest框架之fixture详细使用方法及举例](https://blog.csdn.net/Z1998hx0919/article/details/118227331)
 
 示例（test_pytest.py）
 ```python

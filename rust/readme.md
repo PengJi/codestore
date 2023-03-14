@@ -70,3 +70,6 @@ rustc --version
 生成文档（在浏览器中打开当前项目用到的库的文件）：`cargo doc --open`
 
 ***
+
+# 其他
+[了解下Rust 模块使用方式](https://juejin.cn/post/7070481262749679653#heading-5)
