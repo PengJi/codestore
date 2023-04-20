@@ -43,7 +43,7 @@ qemug-ga 的架构如下：
 
 qemu 创建一个 `virtserialport` 串口设备，该串口设备还有一个 `chardev` 设备，提供虚拟机与外部设备的连接、数据传输等，对应的后端为 `unix socket`，对应的文件是 `/tmp/qga.sock`，qemu 还会将该 socket 文件的 fd 加入事件监听的主循环中。
 
-当向虚拟机发送 qemu-ga 请求命令时，比如设置或获取一些信息，就要向 `unix socket` 文件写入请求数据，数据的格式与 qmp 命令一样也是 json。当 socket 收到数据时就会唤醒 qemu 的主循环，串口设备读取数据，然后填写 virtio 的 ving，向设备注入一个中断。
+当向虚拟机发送 qemu-ga 请求命令时，比如设置或获取一些信息，就要向 `unix socket` 文件写入请求数据，数据的格式与 qmp 命令一样也是 json。当 socket 收到数据时就会唤醒 qemu 的主循环，串口设备读取数据，然后填写 virtio 的 ring，向设备注入一个中断。
 
 虚拟机中的设备接收到这个中断之后会读取数据，并唤醒用户态的 qga 进程。qemu-ga 本身有一个事件循环来监听 `/dev/vport0p1` 的数据，当它被唤醒时就会处理请求并生成应答数据，应答数据的格式也是 json。 应答数据通过 virtio 串口设备向 qemu 发送数据，qemu 则通过 chardev 设备向宿主机上的 `unix socket` 文件发送其应答数据。
 
