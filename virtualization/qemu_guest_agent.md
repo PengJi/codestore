@@ -24,11 +24,11 @@
 -device virtserialport,bus=virtio-serial0.0,nr=1,chardev=charchannel0,id=channel0,name=org.qemu.guest_agent.0 
 ```
 各参数含义如下：  
-`-chardev socket`  
-指定了一个字符设备，其对应为 `unix socket`，名字为 `virio-serial0`，在宿主机中可以看到类似于 `/var/lib/libvirt/qemu/channel/target/domain-42-fea480aa-5e8d-4eda-8/org.qemu.guest_agent.0` 的 socket 文件。
-
 `-device virtio-serial-pci`  
 创建一个 `virtio-serial` 的 PCI 代理设备，其初始化时会创建一条 `virtio-serial-bus`，用来挂载 `virtioserialport` 设备。
+
+`-chardev socket`  
+指定了一个字符设备，其对应为 `unix socket`，名字为 `virio-serial0`，在宿主机中可以看到类似于 `/var/lib/libvirt/qemu/channel/target/domain-42-fea480aa-5e8d-4eda-8/org.qemu.guest_agent.0` 的 socket 文件。
 
 `-device virtserialport`  
 创建一个 `virioserialport` 设备，其对应的 chardev 是 `virio-serial0`，名字是 `org.qemu_agent.0`，该设备会挂到 `virio-serial-bus` 上面，在虚拟机中我们就可以看到 `/dev/virtio-ports/org.qemu.guest_agent.0` 设备。
@@ -130,7 +130,7 @@ typedef struct GAConfig {
 `method` 表示串行端口的类型，可以使 virio-serial 或者 isa。  
 `daemonsize` 表示是否已守护进程运行。
 
-qemu-ga 的 main 函数首先会分配 GAState 和 GACconfig 结构，并调用     `config_load(config)` 和 `config_parse(config, argc, argv)` 把环境变量和命令行参数解析到 GACconfig，比如`--method=virtio-serial`会把值赋给 `config->method`，`--path=/dev/virtio-ports/org.qemu.guest_agent.0` 会把值赋给 `config->path`。 
+qemu-ga 的 main 函数首先会分配 GAState 和 GACconfig 结构，并调用 `config_load(config)` 和 `config_parse(config, argc, argv)` 把环境变量和命令行参数解析到 GACconfig，比如`--method=virtio-serial`会把值赋给 `config->method`，`--path=/dev/virtio-ports/org.qemu.guest_agent.0` 会把值赋给 `config->path`。 
 `config_load` 和 `config_parse` 会解析配置参数并分配给 `GAConfig`。
 
 初始化的第二部分工作还包括将 qemu-ga 支持的各个命令注册到一个链表中。其注册函数如下：
@@ -225,7 +225,7 @@ static gboolean channel_init(GAState *s, const gchar *method, const gchar *path,
     return true;
 }
 ```
-初始化通道首先会根据传入的参数来决定通道的类型，然后调用 `ga_channel_new` 创建一个通道，其本质是调用 `ga_channel_open` 函数打开 virtio 串口设备，得到该设备的 fd，然后调用 `ga_channel_client_add` 将 fd 加入到 qemu-ga 的事件循环中。当该 fd 有数据到达时，会调用 `ga_channel_client_event`，该函数最终会调用到 channel_event_cb 函数，函数代码如下：
+初始化通道首先会根据传入的参数来决定通道的类型，然后调用 `ga_channel_new` 创建一个通道，其本质是调用 `ga_channel_open` 函数打开 virtio 串口设备，得到该设备的 fd，然后调用 `ga_channel_client_add` 将 fd 加入到 qemu-ga 的事件循环中。当该 fd 有数据到达时，会调用 `ga_channel_client_event`，该函数最终会调用到 `channel_event_cb` 函数，函数代码如下：
 ```c
 static gboolean channel_event_cb(GIOCondition condition, gpointer data)
 {
@@ -290,7 +290,7 @@ static void process_event(JSONMessageParser *parser, GQueue *tokens)
     qobject_unref(qdict);
 }
 ```
-上述中的 process_command 会调用 qmp_dispatch：
+上述的 process_command 会调用 qmp_dispatch：
 ```c
 static void process_command(GAState *s, QDict *req)
 {
@@ -411,9 +411,7 @@ static void virtio_serial_device_realize(DeviceState *dev, Error **errp)
 
 ***
 
-命令行 `-chardev socket,id=charchannel0,fd=51,server,nowait` 会创建一个后端为 `unix socket` 的 chardev 设备。chardev 设备的共同父类型为 `TYPE_CHARDEV`，各个子类型包括：TYPE_CHARDEV_SOCKET、TYPE_CHARDEV_PTY、 TYPE_CHARDEV_FD 等，每一种子类型使用不同的后端，虚拟机可以通过 chardev 
-
-在 qemu main 函数中会调用 `chardev_init_func` 对每一个 chardev 设备进行初始化。
+命令行 `-chardev socket,id=charchannel0,fd=51,server,nowait` 会创建一个后端为 `unix socket` 的 chardev 设备。chardev 设备的共同父类型为 `TYPE_CHARDEV`，各个子类型包括：TYPE_CHARDEV_SOCKET、TYPE_CHARDEV_PTY、 TYPE_CHARDEV_FD 等，每一种子类型使用不同的后端，虚拟机可以通过 chardev 在 qemu main 函数中会调用 `chardev_init_func` 对每一个 chardev 设备进行初始化。
 
 chardev_init_func 函数如下：
 ```c
