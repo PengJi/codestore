@@ -1,3 +1,7 @@
+# 介绍
+virtio 一种虚拟化标准，用于提高虚拟机与宿主机之间的 IO 设备性能。
+
+# 实际工程中的应用
 # virtio-blk VS virtio-scsi
 virtio-blk:
 ```
