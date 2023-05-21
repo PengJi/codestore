@@ -17,3 +17,6 @@ python
     "--line-length=120"
 ],
 ```
+
+
+[ruff rules](https://beta.ruff.rs/docs/rules/#mccabe-c90)  
