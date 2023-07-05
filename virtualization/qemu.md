@@ -1,6 +1,6 @@
 退出 qemu
-ctrl + a x
+ctrl+a x
 
 
-ctrl + a c
+ctrl+a c
 info registers

@@ -118,134 +118,9 @@ Spike 是 RISC-V 架构的一个参考模拟器，它可以模拟 RISC-V 的指�
 * Spike 模拟的设备和外设较少，主要关注 RISC-V 处理器本身。
 * Spike 的性能较低，因为它主要用于指令集验证和开发，而不是用于实际的应用程序执行。
 
+## [kvmtool](https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git/about/)
+kvmtool 是一个轻量级的 KVM 虚拟化解决方案，它提供了一个简单的用户空间工具集，用于创建和管理 KVM 虚拟机。
 
-```sh
-# make install
-changing dir to build for make "install"...
-make[1]: Entering directory '/home/qemu-7.0.0/build'
-[1/20] Generating qemu-version.h with a custom command (wrapped by meson to capture output)
-[1/2] Installing files.
-Installing subdir /home/qemu-7.0.0/qga/run to /usr/local/var/run
-Installing trace/trace-events-all to /usr/local/share/qemu
-Installing qemu-system-riscv64 to /usr/local/bin
-Installing qemu-riscv64 to /usr/local/bin
-Installing qga/qemu-ga to /usr/local/bin
-Installing qemu-keymap to /usr/local/bin
-Installing qemu-img to /usr/local/bin
-Installing qemu-io to /usr/local/bin
-Installing qemu-nbd to /usr/local/bin
-Installing storage-daemon/qemu-storage-daemon to /usr/local/bin
-Installing qemu-edid to /usr/local/bin
-Installing qemu-bridge-helper to /usr/local/libexec
-Installing qemu-pr-helper to /usr/local/bin
-Installing pc-bios/keymaps/ar to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/bepo to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/cz to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/da to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/de to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/de-ch to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/en-gb to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/en-us to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/es to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/et to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/fi to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/fo to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/fr to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/fr-be to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/fr-ca to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/fr-ch to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/hr to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/hu to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/is to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/it to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/ja to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/lt to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/lv to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/mk to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/nl to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/no to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/pl to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/pt to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/pt-br to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/ru to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/th to /usr/local/share/qemu/keymaps
-Installing pc-bios/keymaps/tr to /usr/local/share/qemu/keymaps
-Installing /home/qemu-7.0.0/include/qemu/qemu-plugin.h to /usr/local/include
-Installing /home/qemu-7.0.0/ui/icons/qemu_16x16.png to /usr/local/share/icons/hicolor/16x16/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu_24x24.png to /usr/local/share/icons/hicolor/24x24/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu_32x32.png to /usr/local/share/icons/hicolor/32x32/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu_48x48.png to /usr/local/share/icons/hicolor/48x48/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu_64x64.png to /usr/local/share/icons/hicolor/64x64/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu_128x128.png to /usr/local/share/icons/hicolor/128x128/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu_256x256.png to /usr/local/share/icons/hicolor/256x256/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu_512x512.png to /usr/local/share/icons/hicolor/512x512/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu_32x32.bmp to /usr/local/share/icons/hicolor/32x32/apps
-Installing /home/qemu-7.0.0/ui/icons/qemu.svg to /usr/local/share/icons/hicolor/scalable/apps
-Installing /home/qemu-7.0.0/ui/qemu.desktop to /usr/local/share/applications
-Installing /home/qemu-7.0.0/pc-bios/bios.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/bios-256k.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/bios-microvm.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/qboot.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/sgabios.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios-cirrus.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios-stdvga.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios-vmware.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios-qxl.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios-virtio.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios-ramfb.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios-bochs-display.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vgabios-ati.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/openbios-sparc32 to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/openbios-sparc64 to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/openbios-ppc to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/QEMU,tcx.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/QEMU,cgthree.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/pxe-e1000.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/pxe-eepro100.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/pxe-ne2k_pci.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/pxe-pcnet.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/pxe-rtl8139.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/pxe-virtio.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/efi-e1000.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/efi-eepro100.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/efi-ne2k_pci.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/efi-pcnet.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/efi-rtl8139.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/efi-virtio.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/efi-e1000e.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/efi-vmxnet3.rom to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/qemu-nsis.bmp to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/bamboo.dtb to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/canyonlands.dtb to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/petalogix-s3adsp1800.dtb to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/petalogix-ml605.dtb to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/multiboot.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/multiboot_dma.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/linuxboot.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/linuxboot_dma.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/kvmvapic.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/pvh.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/s390-ccw.img to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/s390-netboot.img to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/slof.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/skiboot.lid to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/palcode-clipper to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/u-boot.e500 to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/u-boot-sam460-20100605.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/qemu_vga.ndrv to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/edk2-licenses.txt to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/hppa-firmware.img to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/npcm7xx_bootrom.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vof.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/vof-nvram.bin to /usr/local/share/qemu
-Installing /home/qemu-7.0.0/pc-bios/keymaps/sl to /usr/local/share/qemu/keymaps
-Installing /home/qemu-7.0.0/pc-bios/keymaps/sv to /usr/local/share/qemu/keymaps
-Running custom install script '/usr/bin/python3 /home/qemu-7.0.0/meson/meson.py --internal gettext install --subdir=po --localedir=share/locale --pkgname=qemu'
-make[1]: Leaving directory '/home/qemu-7.0.0/build'
-```
 
 ## 练习
 [使用Rust实现vhost-user设备](https://github.com/oscomp/proj129-vhost-user-devices-in-rust)  
@@ -258,3 +133,6 @@ make[1]: Leaving directory '/home/qemu-7.0.0/build'
 [CentOS Cloud images](http://cloud.centos.org/centos/7/images/)  
 [​[qemu][http]qemu的网络类型disk技术分析](https://cloud.tencent.com/developer/article/1087508)  
 [[linux][storage]Linux存储栈](https://cloud.tencent.com/developer/article/1087520)  
+[[Note] Learning KVM - implement your own kernel](https://david942j.blogspot.com/2018/10/note-learning-kvm-implement-your-own.html)  
+[河马](https://www.zhihu.com/people/he-ma-31-68/posts)   
+[惠伟](https://www.zhihu.com/people/huiweics/posts)  
