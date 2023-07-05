@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 
 
@@ -9,10 +8,13 @@ class Worker:
         worker = Worker(task=task)
         worker.start()
     """
+
     def __init__(self, task) -> None:
         self.task = task
 
-    def start(self,):
+    def start(
+        self,
+    ):
         while True:
             try:
                 _dequeued_item = self.task.broker.dequeue(queue_name=self.task.task_name)
@@ -20,7 +22,7 @@ class Worker:
                 task_id = dequeued_item["task_id"]
                 task_args = dequeued_item["args"]
                 task_kwargs = dequeued_item["kwargs"]
-                task_kwargs['task_id'] = task_id
+                task_kwargs["task_id"] = task_id
                 self.task.run(*task_args, **task_kwargs)
                 print("succesful run of task: {0}".format(task_id))
             except Exception:

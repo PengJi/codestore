@@ -347,7 +347,7 @@ int main(int argc, char** argv)
         sleep(1);
         printf("child got a message: %s\n", p_map);
         sprintf(p_map, "%s", "hi, dad, this is son");
-        munmap(p_map, BUF_SIZE); //实际上，进程终止时，会自动解除映射。
+        munmap(p_map, BUF_SIZE);  //实际上，进程终止时，会自动解除映射。
         exit(0);
     }
 

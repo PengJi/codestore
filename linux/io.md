@@ -5,7 +5,7 @@ I/O执行模型(I/O Execution Model，简称IO Model, IO模型)：
 4. signal driven IO
 5. asynchronous IO
 
-当一个用户进程发出一个 read I/O系统调用时，主要经历两个阶段：
+当一个用户进程发出一个 read I/O 系统调用时，主要经历两个阶段：
 1. 等待数据准备好 (Waiting for the data to be ready)；
 2. 把数据从内核拷贝到用户进程中(Copying the data from the kernel to the process)；
 

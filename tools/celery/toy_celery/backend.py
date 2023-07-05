@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import redis
 
 
@@ -6,13 +5,12 @@ class Backend:
     """
     use redis to store result.
     """
+
     def __init__(self):
         host = "localhost"
         port = 6379
         password = None
-        self.redis_instance = redis.StrictRedis(
-            host=host, port=port, password=password, db=0, socket_timeout=8.0
-        )
+        self.redis_instance = redis.StrictRedis(host=host, port=port, password=password, db=0, socket_timeout=8.0)
 
     def enqueue(self, item, queue_name):
         self.redis_instance.lpush(queue_name, item)

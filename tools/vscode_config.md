@@ -10,6 +10,7 @@ python
     "--ignore=C901"
 ],
 ```
+
 代码格式化：black
 ```python
 "python.formatting.provider": "black",

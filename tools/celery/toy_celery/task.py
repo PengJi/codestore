@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import abc
 import json
 import uuid
@@ -75,7 +74,7 @@ def async_result(task_id):
     state = dequeued_item["state"]
     meta = dequeued_item["meta"]
 
-    class Info():
+    class Info:
         def __init__(self, state, meta):
             self.state = state
             self.meta = meta

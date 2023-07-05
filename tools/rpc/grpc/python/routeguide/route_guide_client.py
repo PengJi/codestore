@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from __future__ import print_function
 
 import random
@@ -14,8 +12,8 @@ import route_guide_resources
 
 def make_route_note(message, latitude, longitude):
     return route_guide_pb2.RouteNote(
-        message=message,
-        location=route_guide_pb2.Point(latitude=latitude, longitude=longitude))
+        message=message, location=route_guide_pb2.Point(latitude=latitude, longitude=longitude)
+    )
 
 
 def guide_get_one_feature(stub, point):
@@ -40,7 +38,7 @@ def guide_list_features(stub):
     # 客户端指定一个矩形范围(矩形的对角点坐标), 服务器返回这个范围内的地点信息
     rectangle = route_guide_pb2.Rectangle(
         lo=route_guide_pb2.Point(latitude=400000000, longitude=-750000000),
-        hi=route_guide_pb2.Point(latitude=420000000, longitude=-730000000)
+        hi=route_guide_pb2.Point(latitude=420000000, longitude=-730000000),
     )
     print("Looking for features between 40, -75 and 42, -73")
 
@@ -94,7 +92,7 @@ def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    with grpc.insecure_channel('localhost:50051') as channel:
+    with grpc.insecure_channel("localhost:50051") as channel:
         stub = route_guide_pb2_grpc.RouteGuideStub(channel)
         print("-------------- GetFeature --------------")
         guide_get_feature(stub)
@@ -106,6 +104,6 @@ def run():
         guide_route_chat(stub)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig()
     run()

@@ -1,5 +1,4 @@
-Linux kernel  
-Linux syscall
+Linux syscall and kernel
 
 linux kernel source code
 [https://kernel.googlesource.com/pub/scm/linux/kernel/git/nico/archive/+refs](https://kernel.googlesource.com/pub/scm/linux/kernel/git/nico/archive/+refs)  
