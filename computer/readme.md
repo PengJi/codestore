@@ -1,4 +1,4 @@
-计算机原理
+计算机体系架构与原理
 
 # 参考资料
 [计算机组成 Computer Organization](https://www.coursera.org/learn/jisuanji-zucheng/home/week/2)  
