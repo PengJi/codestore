@@ -520,7 +520,7 @@ Memory KASLR using RDRAND RDTSC...
 
 ```
 
-## 配置网络
+## 进入 guest OS 配置网络
 ```sh
 ip link list
 ip link set eth0 up
