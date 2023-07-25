@@ -45,10 +45,51 @@ Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助�
 ***
 
 ## 安装
-`curl https://sh.rustup.rs -sSf | sh`  
-`source $HOME/.cargo/env`  
-或手动添加环境变量  
-`export PATH="$HOME/.cargo/bin:$PATH"`  
+# 安装 Rust 版本管理器 rustup 和 Rust 包管理器 cargo
+```sh
+curl https://sh.rustup.rs -sSf | sh
+···
+
+如果下载官方脚本较慢，则可修改 rustup 的镜像地址
+中国科学技术大学镜像服务器
+```sh
+export RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+export RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
+curl https://sh.rustup.rs -sSf | sh
+```
+
+或换成清华大学镜像源
+```sh
+export RUSTUP_DIST_SERVER=https://mirrors.tuna.edu.cn/rustup
+export RUSTUP_UPDATE_ROOT=https://mirrors.tuna.edu.cn/rustup/rustup
+curl https://sh.rustup.rs -sSf | sh
+```
+
+使生效
+```sh
+source $HOME/.cargo/env
+# 查看版本
+rustc --version
+```
+ 
+安装 rustc 的 nightly 版本，并把该版本设置为 rustc 的缺省版本。
+```sh
+rustup install nightly
+rustup default nightly
+```
+
+把软件包管理器 cargo 所用的软件包镜像地址 crates.io 换成 tuna 源来加速三方库的下载。
+打开或新建 ~/.cargo/config 文件
+```sh
+[source.crates-io]
+replace-with = 'tuna'
+
+[source.tuna]
+registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
+```
+
+接下来安装一些Rust相关的软件包
+
 
 ## 更新
 rustup update
