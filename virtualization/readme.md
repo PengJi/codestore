@@ -125,7 +125,6 @@ kvmtool 是一个轻量级的 KVM 虚拟化解决方案，它提供了一个简�
 ## 练习
 [使用Rust实现vhost-user设备](https://github.com/oscomp/proj129-vhost-user-devices-in-rust)  
 [用Rust语言重写Linux kernel中的KVM](https://github.com/oscomp/proj178-kvm-in-rust)  
-[深入 virio-fs]()
 
 
 # 参考
