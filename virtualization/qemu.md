@@ -1,4 +1,4 @@
-### 编译安装安装
+### 编译安装
 ```sh
 # 安装编译所需的依赖包
 sudo apt install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev \
@@ -7,7 +7,6 @@ sudo apt install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev lib
               git tmux python3 python3-pip ninja-build
 
 # 下载源码包
-# 提取码：jimc
 wget https://download.qemu.org/qemu-7.0.0.tar.xz
 
 # 解压
@@ -15,9 +14,9 @@ tar xvJf qemu-7.0.0.tar.xz
 
 # 编译安装并配置 RISC-V 支持
 cd qemu-7.0.0
-./configure --target-list=riscv64-softmmu,riscv64-linux-user,\
-x86_64-softmmu,x86_64-linux-user \
---enable-sdl  # 如果要支持图形界面，可添加 " --enable-sdl" 参数
+./configure \
+--target-list=riscv64-softmmu,riscv64-linux-user,x86_64-softmmu,x86_64-linux-user \
+--enable-sdl  # 支持图形界面
 #   Directories
 #     Install prefix               : /usr/local
 #     BIOS directory               : share/qemu
@@ -52,7 +51,6 @@ qemu-system-x86_64 --version
 qemu-x86_64 --version
 ```
 
-
 [环境配置](http://rcore-os.cn/rCore-Tutorial-Book-v3/chapter0/5setup-devel-env.html)
 
 ### 快捷键（chardev/char-mux.c）
@@ -68,3 +66,6 @@ info registers
 `ctrl+a s`
 `ctrl+a b`
 `ctrl+a t`
+
+
+
