@@ -51,9 +51,6 @@ qemu-system-x86_64 --version
 qemu-x86_64 --version
 ```
 
-[环境配置](http://rcore-os.cn/rCore-Tutorial-Book-v3/chapter0/5setup-devel-env.html)
-
-
 # 使用 qemu
 ## 快捷键（chardev/char-mux.c）
 退出 qemu
@@ -69,24 +66,43 @@ info registers
 `ctrl+a b`
 `ctrl+a t`
 
+## 常用命令行
+```bash
+# 查看支持的设备
+qemu-system-x86_64 -device help
+```
+
 ## 使用 qemu
+### 配置参数详解
+配置 CPU
+```bash
+
+```
+
+### 安装 guest OS 
+创建 qcow2 磁盘
+```bash
+qemu-img create -f qcow2 centos-7_9.img 20G
+```
+
 启动 guest OS
 ```sh
-/usr/libexec/qemu-kvm -name guest=187306a8-5cfb-4d2d-967b-a23d7714b087,debug-threads=on \
+qemu-system-x86_64 \
+-enable-kvm \
 -cpu host \
--m size=4194304k,slots=255,maxmem=4194304000k \
--realtime mlock=off -smp 4,maxcpus=240,sockets=240,cores=1,threads=1 \
+-smp 4,maxcpus=32,sockets=16,cores=2,threads=1 \
+-m size=4G,slots=255,maxmem=8G \
 -device piix3-usb-uhci,id=usb,bus=pci.0,addr=0x1.0x2 \
 -device nec-usb-xhci,p2=15,p3=15,id=usb1,bus=pci.0,addr=0x5 \
 -device usb-ehci,id=usb2,bus=pci.0,addr=0x6 \
 -device piix3-usb-uhci,id=usb3,bus=pci.0,addr=0x7 \
--drive file.driver=iscsi,file.portal=127.0.0.1:3260,file.target=iqn.2016-02.com.smartx:system:zbs-iscsi-datastore-1637755567369y,file.lun=127,file.transport=tcp,format=raw,if=none,id=drive-virtio-disk0,cache=none,aio=native \
--device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x9,drive=drive-virtio-disk0,id=virtio-disk0,bootindex=1,write-cache=on \
--drive file=/usr/share/smartx/images/ae5d0ad2-ee8b-4be8-a5e9-dd55f8beee62,file.locking=off,format=raw,if=none,id=drive-ide0-0-0,readonly=on \
+-drive if=none,format=qcow2,file=/home/jipeng/centos-7_9.img,id=disk0 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x9,drive=disk0,id=virtio-disk0,bootindex=1,write-cache=on \
+-drive file=/home/jipeng/Downloads/CentOS-7-x86_64-DVD-2009.iso,file.locking=off,format=raw,if=none,id=drive-ide0-0-0,readonly=on \
 -device ide-cd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0,bootindex=2 \
--vnc 192.168.74.83:5 \
+-vnc :0 \
 -monitor stdio \
--chardev socket,id=qmp,port=4444,host=localhost,server \
+-chardev socket,id=qmp,port=4444,host=localhost,server=on \
 -mon chardev=qmp,mode=control,pretty=on
 ```
 
