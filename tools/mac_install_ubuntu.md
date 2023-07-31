@@ -4,8 +4,9 @@
 
 https://zhuanlan.zhihu.com/p/60617749
 
-安装翻墙代理
-https://github.com/Fndroid/clash_for_windows_pkg/releases
+
+### clash for windows
+[Ubuntu 下使用 Clash For Windows](https://hiif.ong/clash/)
 
 
 ### 搜狗输入法
@@ -21,4 +22,9 @@ https://github.com/Fndroid/clash_for_windows_pkg/releases
 `sudo apt install shutter`
 [配置](https://blog.csdn.net/hanshileiai/article/details/46843713)
 [问题](https://askubuntu.com/questions/1353360/ubuntu-21-04-shutter-did-not-work-without-x11-server)
+
+
+### flux
+[xflux-gui/fluxgui](https://github.com/xflux-gui/fluxgui)
+
 

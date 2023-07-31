@@ -79,7 +79,7 @@ rustup default nightly
 ```
 
 把软件包管理器 cargo 所用的软件包镜像地址 crates.io 换成 tuna 源来加速三方库的下载。
-打开或新建 ~/.cargo/config 文件
+打开或新建 `~/.cargo/config` 文件
 ```sh
 [source.crates-io]
 replace-with = 'tuna'

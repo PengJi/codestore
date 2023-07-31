@@ -1,10 +1,11 @@
 # 编译安装
 ```sh
 # 安装编译所需的依赖包
-sudo apt install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev \
-              gawk build-essential bison flex texinfo gperf libtool patchutils bc \
-              zlib1g-dev libexpat-dev pkg-config  libglib2.0-dev libpixman-1-dev libsdl2-dev \
-              git tmux python3 python3-pip ninja-build
+sudo apt install autoconf automake autotools-dev curl \
+    libmpc-dev libmpfr-dev libgmp-dev \
+    gawk build-essential bison flex texinfo gperf libtool patchutils bc \
+    zlib1g-dev libexpat-dev pkg-config libglib2.0-dev libpixman-1-dev libsdl2-dev \
+    git tmux python3 python3-pip ninja-build
 
 # 下载源码包
 wget https://download.qemu.org/qemu-7.0.0.tar.xz
@@ -17,22 +18,22 @@ cd qemu-7.0.0
 ./configure \
 --target-list=riscv64-softmmu,riscv64-linux-user,x86_64-softmmu,x86_64-linux-user \
 --enable-sdl  # 支持图形界面
-#   Directories
-#     Install prefix               : /usr/local
-#     BIOS directory               : share/qemu
-#     firmware path                : /usr/local/share/qemu-firmware
-#     binary directory             : bin
-#     library directory            : lib
-#     module directory             : lib/qemu
-#     libexec directory            : libexec
-#     include directory            : include
-#     config directory             : /usr/local/etc
-#     local state directory        : /usr/local/var
-#     Manual directory             : share/man
-#     Doc directory                : /usr/local/share/doc
-#     Build directory              : /home/jipeng/qemu-7.0.0/build
-#     Source path                  : /home/jipeng/qemu-7.0.0
-#     GIT submodules               : ui/keycodemapdb tests/fp/berkeley-testfloat-3 tests/fp/berkeley-softfloat-3 dtc capstone slirp
+# Install prefix               : /usr/local
+# BIOS directory               : share/qemu
+# firmware path                : /usr/local/share/qemu-firmware
+# binary directory             : bin
+# library directory            : lib
+# module directory             : lib/qemu
+# libexec directory            : libexec
+# include directory            : include
+# config directory             : /usr/local/etc
+# local state directory        : /usr/local/var
+# Manual directory             : share/man
+# Doc directory                : /usr/local/share/doc
+# Build directory              : /home/jipeng/app/qemu-7.0.0/build
+# Source path                  : /home/jipeng/app/qemu-7.0.0
+# GIT submodules               : ui/keycodemapdb tests/fp/berkeley-testfloat-3 tests/fp/berkeley-softfloat-3 dtc capstone slirp
+
 
 # 编译
 make -j$(nproc)
@@ -86,6 +87,7 @@ qemu-img create -f qcow2 centos-7_9.img 20G
 ```
 
 启动 guest OS
+centos7.9 version 3.10
 ```sh
 qemu-system-x86_64 \
 -enable-kvm \
@@ -106,8 +108,28 @@ qemu-system-x86_64 \
 -mon chardev=qmp,mode=control,pretty=on
 ```
 
+openEuler 22.03 version 5.10
+```sh
+qemu-system-x86_64 \
+-enable-kvm \
+-cpu host \
+-smp 4,maxcpus=32,sockets=16,cores=2,threads=1 \
+-m size=4G,slots=255,maxmem=8G \
+-device piix3-usb-uhci,id=usb,bus=pci.0,addr=0x1.0x2 \
+-device nec-usb-xhci,p2=15,p3=15,id=usb1,bus=pci.0,addr=0x5 \
+-device usb-ehci,id=usb2,bus=pci.0,addr=0x6 \
+-device piix3-usb-uhci,id=usb3,bus=pci.0,addr=0x7 \
+-drive if=none,format=qcow2,file=/home/jipeng/openEuler-22_03.img,id=disk0 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x9,drive=disk0,id=virtio-disk0,bootindex=1,write-cache=on \
+-drive file=/home/jipeng/Downloads/openEuler-22.03-LTS-x86_64-dvd.iso,file.locking=off,format=raw,if=none,id=drive-ide0-0-0,readonly=on \
+-device ide-cd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0,bootindex=2 \
+-vnc :1 \
+-monitor stdio 
+```
+
 指定 vnc 地址和端口，可使用 vnc viewer 连接，比如：192.168.74.83:5
 `-vnc 192.168.74.83:5`
+连接时的地址为 192.168.74.83:5905
 
 在启动 qemu 之后，进入交互式命令行，之后可执行 hmp 命令
 `-monitor stdio`   
