@@ -7,6 +7,11 @@
 </controller>
 ```
 
+http://blog.nsfocus.net/easy-kvm-virtualization/
+https://blog.csdn.net/yzy1103203312/article/details/81661450
+https://blackskygg.github.io/2016/08/17/virtio-host-guest-communication/
+
+
 添加串口设备
 ```xml
 <channel type='unix'>
@@ -28,7 +33,7 @@
 创建一个 `virtio-serial` 的 PCI 代理设备，其初始化时会创建一条 `virtio-serial-bus`，用来挂载 `virtioserialport` 设备。
 
 `-chardev socket`  
-指定了一个字符设备，其对应为 `unix socket`，名字为 `virio-serial0`，在宿主机中可以看到类似于 `/var/lib/libvirt/qemu/channel/target/domain-42-fea480aa-5e8d-4eda-8/org.qemu.guest_agent.0` 的 socket 文件。
+指定了一个字符设备，其后端设备对应为 `unix socket`，名字为 `virio-serial0`，在宿主机中可以看到类似于 `/var/lib/libvirt/qemu/channel/target/domain-42-fea480aa-5e8d-4eda-8/org.qemu.guest_agent.0` 的 socket 文件。
 
 `-device virtserialport`  
 创建一个 `virioserialport` 设备，其对应的 chardev 是 `virio-serial0`，名字是 `org.qemu_agent.0`，该设备会挂到 `virio-serial-bus` 上面，在虚拟机中我们就可以看到 `/dev/virtio-ports/org.qemu.guest_agent.0` 设备。
@@ -337,6 +342,7 @@ if (qemu_opts_foreach(qemu_find_opts("device"),
     exit(1);
 }
 ```
+
 其中 `device_init_func` 会将 `virtio-serical-pci` 设备具现化，调用的函数为 `virtio_serial_pci_realize`.
 ```c
 // hw/virtio/virtio-pci.c
@@ -353,6 +359,7 @@ static void virtio_serial_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
     object_property_set_bool(OBJECT(vdev), true, "realized", errp);
 }
 ```
+
 接着调用 `virtio_serial_device_realize` 具现化 `virtio-serial-device` 设备，其代码如下：
 ```c
 // hw/char/virtio-serial-bus.c
@@ -405,7 +412,7 @@ static void virtio_serial_device_realize(DeviceState *dev, Error **errp)
     QLIST_INSERT_HEAD(&vserdevices.devices, vser, next);
 }
 ```
-上述代码中 `virtio_init` 初始化 `virtio-serial-device` 设备，调用 `qbus_create_inplace` 函数创建一条 virtio 串行总线，该总线上可以挂 virtio 串口设备，分配 virtio serial device 自己的 virtqueue（`vser->c_ivq` 和 `vser->c_ovq`） 来控制 virtioserialdevice 设备，分配并初始化 virtio 串口设备的 virtqueue（即 `vser->ivqs` 数组和 `vser->ovqs` 数组）来进行数据传输。  
+上述代码中 `virtio_init` 初始化 `virtio-serial-device` 设备，调用 `qbus_create_inplace` 函数创建一条 virtio 串行总线，该总线上可以挂 virtio 串口设备，分配 `virtio serial device` 自己的 virtqueue（`vser->c_ivq` 和 `vser->c_ovq`） 来控制 virtioserialdevice 设备，分配并初始化 virtio 串口设备的 virtqueue（即 `vser->ivqs` 数组和 `vser->ovqs` 数组）来进行数据传输。  
 
 从虚拟机到宿主机的 virtqueue 的处理函数是 handle_output，从宿主机到虚拟机的 virtqueue 的处理函数是 handle_input，handle_input 只在特殊情况下调用，如虚拟机由于长时间不读取 virtio 串口的数据，导致宿主机不能写，当虚拟机读取了一部分数据之后，就会调用 handle_input 通知宿主机继续写。
 
@@ -514,6 +521,7 @@ static Property virtserialport_properties[] = {
     DEFINE_PROP_END_OF_LIST(),
 };
 ```
+
 该类设备都会有一个 `virtserialport_properties` 属性，其对应设备对象为 chr 的 CharBackend 成员，在设备初始化的时候会初始化该属性。调用 chardev 属性的设置函数 `set_chr`：
 ```c
 // hw/core/qdev-properties-system.c
@@ -540,6 +548,7 @@ static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
     g_free(str);
 }
 ```
+
 `set_chr` 首先调用 `qemu_chr_find` 在 chardevs 链表上找到 chardev 设备，在之前的初始化中已经吧 qga0 加在了链表上。接着调用 `qemu_chr_fe_init` 对 virtio serial port 的 CharBackend 成员进行初始化。
 ```c
 // chardev/char-fe.c
@@ -574,6 +583,7 @@ unavailable:
     return false;
 }
 ```
+
 `qemu_chr_fe_init` 函数将 CharBackend 和 Chardev 关联起来，并初始 CharBackend 其他成员，相关数据结构的关系如下：
 ![](./images/virtio-serial.jpg)
 
@@ -631,6 +641,7 @@ static void virtser_port_device_realize(DeviceState *dev, Error **errp)
     port->elem = NULL;
 }
 ```
+
 上述函数会为该 port 设备找到其在 virtio serial 总线的 id。接着调用 virtserialport 设备的具现化函数 `virtconsole_realize`，
 ```c
 // hw/char/virtio-console.c
