@@ -1,1 +1,1 @@
-Python 相关技术
+Python

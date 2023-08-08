@@ -17,7 +17,7 @@ datetime.datetime(2013, 2, 7, 17, 30, 3)
 '2013-02-07T17:30:03.083988'
 ```
 
-### elapsed time
+### calculate elapsed time
 ```py 
 import monotonic
 start_time = monotonic.monotonic()
