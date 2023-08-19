@@ -116,7 +116,7 @@ err:
 // 将 guest 的代码加载到 guest 的内存地址 (0x1000 << 4) + 0x0 处
 void load_image(struct vm *vm) {
     int res = 0;
-    int fd = open("./guest/kernel.bin", O_RDONLY);
+    int fd = open("kernel.bin", O_RDONLY);
     if(fd < 0) {
         fprintf(stderr, "Could not open kernel.bin.\n");
         exit(1);

@@ -2,7 +2,11 @@ BIN := kernel.bin
 ELF := kernel.elf
 OBJ := kernel.o
 
-all: $(BIN)
+all: $(BIN) kvm run
+
+.PHONY: kvm
+kvm:
+	gcc kvm.c -o kvm
 
 $(BIN): $(ELF)
 	objcopy -O binary $< $@
@@ -13,5 +17,10 @@ $(ELF): $(OBJ)
 %.o: %.S
 	$(CC) -nostdinc -c $< -o $@
 
+.PHONY: run
+run:
+	./kvm
+
+.PHONY: clean
 clean:
-	rm -f $(BIN) $(ELF) $(OBJ)
+	rm -f kvm $(BIN) $(ELF) $(OBJ)
