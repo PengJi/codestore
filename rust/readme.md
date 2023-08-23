@@ -45,7 +45,7 @@ Rust 由 Graydon Hoare 在 2008 年私人研发，2009年得到 Mozilla 赞助�
 ***
 
 ## 安装
-# 安装 Rust 版本管理器 rustup 和 Rust 包管理器 cargo
+安装 Rust 版本管理器 rustup 和 Rust 包管理器 cargo
 ```sh
 curl https://sh.rustup.rs -sSf | sh
 ···
@@ -87,9 +87,6 @@ replace-with = 'tuna'
 [source.tuna]
 registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
 ```
-
-接下来安装一些Rust相关的软件包
-
 
 ## 更新
 rustup update
