@@ -18,7 +18,7 @@ with mock.patch.object(dhcp.DHCPProxy, "is_enable_dhcp") as mock_is_enable_dhcp:
     mock_is_enable_dhcp.assert_called_with()
 ```
 
-### patch property method
+### patch property or property method
 ```py
 from unittest import mock
 
