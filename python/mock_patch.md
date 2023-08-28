@@ -32,6 +32,7 @@ def test_get_svt_report_by_uuid(self):
 from unittest import mock
 
 with mock.patch("logging.warn") as mock_warn:
+    mock_warn.call_count == 2
     mock_warn.assert_called_once_with("warn msg")
     mock_warn.assert_called_with("warn meg")
 ```
