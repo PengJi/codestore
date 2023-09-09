@@ -1,6 +1,5 @@
 # EXTENSIONS
-python
-代码静态检查：flake8、pylance、ruff
+python 代码静态检查：flake8、pylance、ruff
 ```python
 "python.linting.enabled": true,
 "python.linting.pycodestyleEnabled": false,
@@ -11,7 +10,7 @@ python
 ],
 ```
 
-代码格式化：black
+python 代码格式化：black
 ```python
 "python.formatting.provider": "black",
 "python.formatting.blackArgs": [
