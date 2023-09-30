@@ -27,4 +27,6 @@ https://zhuanlan.zhihu.com/p/60617749
 ### flux
 [xflux-gui/fluxgui](https://github.com/xflux-gui/fluxgui)
 
-
+### terminator + zsh
+[Ubuntu用Terminator+ZSH打造好用的终端开发环境](https://zhuanlan.zhihu.com/p/346665734)  
+[zsh zsh-autosuggestions 颜色设置？](https://www.zhihu.com/question/265489573)  
