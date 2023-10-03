@@ -8,15 +8,11 @@ https://zhuanlan.zhihu.com/p/60617749
 ### clash for windows
 [Ubuntu 下使用 Clash For Windows](https://hiif.ong/clash/)
 
-
 ### 搜狗输入法
 [安装配置](https://shurufa.sogou.com/linux/guide)  
 
 ### vs code
 [安装配置](https://blog.csdn.net/m0_44999129/article/details/123125650)  
-
-### 终端
-修改快捷键
 
 ### shutter 截图软件 
 `sudo apt install shutter`
@@ -29,4 +25,14 @@ https://zhuanlan.zhihu.com/p/60617749
 
 ### terminator + zsh
 [Ubuntu用Terminator+ZSH打造好用的终端开发环境](https://zhuanlan.zhihu.com/p/346665734)  
-[zsh zsh-autosuggestions 颜色设置？](https://www.zhihu.com/question/265489573)  
+[zsh zsh-autosuggestions 颜色设置？](https://www.zhihu.com/question/265489573) 
+
+### sublime text
+[Sublime Text](https://www.sublimetext.com/docs/linux_repositories.html#apt)  
+
+
+### 桌面美化
+[Ubuntu desktop 美化优化指导](https://www.zhihu.com/tardis/zm/art/63584709?source_id=1003)  
+
+### 其他
+[Ubuntu 20.04 启用休眠 (Hibernate) 配置过程](https://xie.infoq.cn/article/af26942709c82ab1c7cd47f87)  
