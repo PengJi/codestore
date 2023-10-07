@@ -366,4 +366,5 @@ parent got a message: hi, dad, this is son
 
 《UNIX环境高级编程（第3版）》  
 [brandongooch/apue.3e](https://github.com/brandongooch/apue.3e)  
-[mmap详解](https://nieyong.github.io/wiki_cpu/mmap%E8%AF%A6%E8%A7%A3.html#toc_0.1)
+[mmap详解](https://nieyong.github.io/wiki_cpu/mmap%E8%AF%A6%E8%A7%A3.html#toc_0.1)  
+[认真分析mmap：是什么 为什么 怎么用 ](https://www.cnblogs.com/huxiao-tee/p/4660352.html)  
