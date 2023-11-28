@@ -121,5 +121,28 @@ print("main")
 # main
 ```
 
+使用示例
+```python
+from concurrent import futures
+
+changed_vm_uuids = []
+with futures.ThreadPoolExecutor(max_workers=10) as executor:
+    res_vms = [
+        executor.submit(self.delete_vm_snapshot, vm_uuid) for vm_uuid in vm_uuids
+    ]
+    try:
+        for f in futures.as_completed(res_vms, timeout=60):
+            try:
+                result = f.result()
+                if result is not None:
+                    changed_vm_uuids.append(result)
+            except Exception as excp:
+                logging.error("Failed to delete snapshot, error: {}".format(excp))
+    except futures.TimeoutError:
+        logging.error("Failed to create VM snapshots, timeout")
+        executor.shutdown(wait=False, cancel_futures=True)
+return changed_vm_uuids
+```
+
 [https://blog.csdn.net/xiaoyu_wu/article/details/102820384](https://blog.csdn.net/xiaoyu_wu/article/details/102820384)  
 [https://www.jianshu.com/p/b9b3d66aa0be](https://www.jianshu.com/p/b9b3d66aa0be)  
