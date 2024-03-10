@@ -3,6 +3,7 @@
 mkdir /backups
 tar cvpzf /backups/system.img --exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/media --exclude=/sys --exclude=/tmp /
 ```
+在备份命令结束时你可能会看到这样一个提示：’tar: Error exit delayed from previous errors’，多数情况下可以忽略它。
 
 恢复系统文件
 ```bash
