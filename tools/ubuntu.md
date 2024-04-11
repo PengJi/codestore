@@ -19,3 +19,9 @@ update-grub2
 reboot
 ```
 如果原来的Ubuntu系统已经崩溃，无法进入。则可以使用Ubuntu安装U盘（live USB）进入试用Ubuntu界面。
+
+# 软件
+forticlient
+[https://repo.fortinet.com/](https://repo.fortinet.com/)
+
+
