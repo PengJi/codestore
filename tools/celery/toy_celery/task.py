@@ -1,10 +1,10 @@
 import abc
 import json
-import uuid
 import traceback
+import uuid
 
-from broker import Broker
 from backend import Backend
+from broker import Broker
 
 
 class BaseTask(abc.ABC):

@@ -1,6 +1,5 @@
-from worker import Worker
 from app import LongTask
-
+from worker import Worker
 
 if __name__ == "__main__":
     # Start the process to execute task

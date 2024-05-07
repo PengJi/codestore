@@ -1,9 +1,8 @@
 import random
 import time
-from flask import Flask, request, render_template, url_for, jsonify
 
+from flask import Flask, jsonify, render_template, request, url_for
 from task import BaseTask, async_result
-
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "top-secret!"
@@ -23,7 +22,7 @@ class LongTask(BaseTask):
 
         for i in range(total):
             if not message or random.random() < 0.25:
-                message = "{0} {1} {2}...".format(random.choice(verb), random.choice(adjective), random.choice(noun))
+                message = "{} {} {}...".format(random.choice(verb), random.choice(adjective), random.choice(noun))
             self.update_state(task_id=task_id, state="PROGRESS", meta={"current": i, "total": total, "status": message})
             time.sleep(1)
 
@@ -32,7 +31,6 @@ class LongTask(BaseTask):
             state="FINISH",
             meta={"current": 100, "total": 100, "status": "Task completed!", "result": 32},
         )
-        return
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -54,7 +52,7 @@ def longtask():
 @app.route("/status/<task_id>")
 def taskstatus(task_id):
     """
-    query tash status
+    query task status
     """
     info = async_result(task_id)
     print(info)
